@@ -1,0 +1,261 @@
+<%-include ("./Include/Admin/head.ejs")%>
+
+  <body>
+
+    <%-include ("./Include/Admin/header.ejs")%>
+
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/dashboard">
+              <i class="bi bi-columns-gap"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+          <li class="nav-item">
+            <a class="nav-link" href="/student">
+              <i class="bi bi-person-circle"></i>
+              <span>Student Management</span>
+            </a>
+          </li><!-- End Error 404 Page Nav -->
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/attendance">
+              <i class="bi bi-table"></i>
+
+              <span>Attendance Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/event">
+
+              <i class="bi bi-calendar-event"></i>
+              <span>Event Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+        </ul>
+
+      </aside><!-- End Sidebar-->
+      <div class="main" id="main">
+        <section class="section student">
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/student"><i class="bi bi-arrow-left"></i> Go Back</a></li>
+
+            </ol>
+          </nav>
+          <div class="row">
+
+            <div class="card mb-3">
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <h5 class="card-title">Student Details</h5>
+                    <p class="fw-bold mb-2">Student ID&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp;<span class="fw-normal" id="student_id">
+                        <%=student_record.student_id%>
+                      </span></p>
+
+                    <p class="fw-bold mb-2">Full Name&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp;<span class="fw-normal" id="student_name">
+                        <%=student_record.name%>
+                      </span></p>
+                    <p class="fw-bold mb-2">Degree&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                      &nbsp; &nbsp; :&nbsp;<span class="fw-normal" id="student_year">
+                        <%=student_record.degree%>
+                      </span></p>
+                    <p class="fw-bold mb-2">Year / Section&nbsp; :&nbsp;<span class="fw-normal" id="student_course">
+                        <%=student_record.year_section%>
+                      </span></p>
+                    <small>Joined Date: <span>
+                        <%=student_record.created_date%>
+                      </span></small>
+                  </div>
+
+
+                  <div class="col-lg-6">
+                    <h5 class="card-title">Generated QR Code</h5>
+                    <div class="">
+                      <canvas id="canvas"></canvas>
+
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+
+          </div>
+          <div class="row">
+            <div class="card">
+              <div class="card-body">
+
+                <h5 class="card-title">Attendance Record</h5>
+                <div class="table-responsive-md">
+
+         
+                <table id="attendanceTable" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Event Name</th>
+                      <th>Time In (AM)</th>
+                      <th>Time Out (AM)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%attendance_record.forEach((attendance)=> {%>
+                      <tr>
+                        <td>
+                          <%=attendance.log_date%>
+                        </td>
+                        <td>Foundation</td>
+                        <td>
+                          <%=attendance.time_in%>
+                        </td>
+                        <td>
+                          <%=attendance.time_out%>
+                        </td>
+                      </tr>
+                      <%})%>
+                  </tbody>
+                </table>
+              </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <%-include ("./Include/Admin/script.ejs")%>
+        <script>
+
+
+
+          var opts = {
+            errorCorrectionLevel: 'H',
+            type: 'png',
+            margin: 1,
+
+          }
+
+          QRCode.toCanvas(document.getElementById('canvas'), '<%=student_record.student_id%>,<%=student_record.name%>,<%=student_record.degree%>,<%=student_record.year_section%>', opts, function (error) {
+            if (error) console.error(error)
+            console.log('success!');
+          })
+
+
+          $(document).ready(function () {
+            $('#attendanceTable').DataTable({
+              dom: 'Bfrtip',
+              buttons: [
+                {
+                  extend: 'pdf',
+                  message: `Student Number : ${'<%=student_record.student_id%>'}\nName\t \t \t \t : ${'<%=student_record.name%>'}\nDegree\t \t \t\t: ${'<%=student_record.degree%>'}\nYear\t \t \t \t\t: ${'<%=student_record.year_section%>'}`,
+                  title: `${'<%=student_record.student_id%>'} - Attendance`,
+
+                  pageSize: "A4",
+                  text: 'Export to PDF',
+
+                  className: "btn btn-danger btn-sm px-3",
+                  customize: function (doc) {
+
+                    //Remove the title created by datatTables
+                    doc.content.splice(0, 1);
+                    //Create a date string that we use in the footer. Format is dd-mm-yyyy
+
+              
+
+                    // A documentation reference can be found at
+                    // https://github.com/bpampuch/pdfmake#getting-started
+                    // Set page margins [left,top,right,bottom] or [horizontal,vertical]
+                    // or one number for equal spread
+                    // It's important to create enough space at the top for a header !!!
+                    doc.pageMargins = [35, 95, 35, 90];
+
+                    // Set the font size fot the entire document
+                    doc.defaultStyle.fontSize = 11;
+
+                    // Create a header object with 3 columns
+                    // Left side: Logo
+                    // Middle: brandname
+                    // Right side: A document title
+
+
+                    doc['header'] = (function () {
+                      return {
+                        columns: [
+
+                          {
+                            image: logo_2,
+                            width: 565,
+                            height: 75
+                          },
+                        ],
+                        margin: 10
+
+                      }
+                    });
+                    // Create a footer object with 2 columns
+                    // Left side: report creation date
+                    // Right side: current page and total pages
+                    doc['footer'] = (function (page, pages) {
+                      return {
+                        columns: [
+
+                          {
+                            image: logo,
+                            width: 565,
+                            height: 65,
+                          }
+                        ],
+                        margin: 10
+                      }
+                    });
+
+                    var objLayout = {};
+                    // Set the fontsize for the table header
+                    doc.styles.tableHeader.fillColor = "#fff";
+                    doc.styles.tableHeader.color = "#000";
+                    doc.styles.tableHeader.fontSize = 11;
+                    doc.content[1].table.widths = ['auto', '*', '*', '*'];
+                    doc.styles.tableBodyOdd.fillColor = '#fff';
+                    doc.styles.tableBodyEven.fillColor = '#fff';
+                    doc.styles.tableBodyOdd.fillColor = '#fff';
+
+                    objLayout['hLineWidth'] = function (i) { return .5; };
+                    objLayout['vLineWidth'] = function (i) { return .5; };
+
+                    objLayout['paddingLeft'] = function (i) { return 10; };
+                    objLayout['paddingRight'] = function (i) { return 10; };
+
+                    objLayout['paddingTop'] = function (i) { return 3; };
+                    objLayout['paddingBottom'] = function (i) { return 3; };
+                    doc.content[1].layout = objLayout;
+
+
+                  }
+
+                },
+                {
+                  extend: 'excel',
+                  title: `${'<%=student_record.student_id%>'} - Attendance`,
+                  text: 'Export to Excel', className: "btn btn-success btn-sm px-3",
+                }
+              ]
+            });
+          });
+
+
+        </script>
+  </body>
+
+  </html>

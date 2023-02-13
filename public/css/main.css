@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
+:root {
+	--bs-bg-color: #f7f5f0;
+	--bs-blue: #3459e6;
+	--bs-indigo: #6610f2;
+	--bs-purple: #6f42c1;
+	--bs-pink: #d63384;
+	--bs-red: #dc3545;
+	--bs-orange: #fd7e14;
+	--bs-yellow: #ffc107;
+	--bs-green: #198754;
+	--bs-teal: #20c997;
+	--bs-cyan: #0dcaf0;
+	--bs-black: #000;
+	--bs-white: #fff;
+	--bs-gray: #6c757d;
+	--bs-gray-dark: #343a40;
+	--bs-primary: #3459e6;
+	--bs-secondary: #6c757d;
+	--bs-success: #198754;
+	--bs-info: #0dcaf0;
+	--bs-warning: #ffc107;
+	--bs-danger: #dc3545;
+	--bs-light: #f8f9fa;
+	--bs-dark: #212529;
+	--gray-100: #f8f9fa;
+	--gray-200: #e9ecef;
+	--gray-300: #dee2e6;
+	--gray-400: #ced4da;
+	--gray-500: #adb5bd;
+	--gray-600: #6c757d;
+	--gray-700: #495057;
+	--gray-800: #343a40;
+	--gray-900: #212529;
+}
+body {
+	font-family: "Inter";
+}
+
+
+li.instruction {
+	font-weight: bold;
+}
+
+li.instruction > div {
+	font-weight: normal;
+}
+
+/* CSS */
+button.html5-qrcode-element {
+	appearance: button;
+
+	box-sizing: border-box;
+	color: #ffffff;
+	cursor: pointer;
+
+	font-size: 14px;
+	line-height: 1.15;
+	overflow: visible;
+	padding: 0.375rem 0.75rem;
+	position: relative;
+	text-align: center;
+	text-transform: none;
+	transition: all 80ms ease-in-out;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: manipulation;
+	width: fit-content;
+}
+
+button.html5-qrcode-element:disabled {
+	opacity: 0.5;
+}
+
+button.html5-qrcode-element:focus {
+	outline: 0;
+}
+
+#html5-qrcode-button-camera-start:hover,
+#html5-qrcode-button-camera-permission:hover {
+	background-color: #424649;
+	border-color: #373b3e;
+}
+
+#html5-qrcode-button-camera-start:active,
+#html5-qrcode-button-camera-permission:active {
+	background-color: #4d5154;
+	border-color: #373b3e;
+}
+
+#html5-qrcode-button-camera-stop:hover {
+	background-color: #bb2d3b;
+	border-color: #dc3545;
+}
+
+#html5-qrcode-button-camera-stop:active {
+	background-color: #b02a37;
+	border-color: #a52834;
+}
+
+#html5-qrcode-button-camera-start,
+#html5-qrcode-button-camera-permission {
+	background-color: var(--bs-gray-dark);
+	border: 1px solid var(--bs-gray-dark);
+}
+
+#html5-qrcode-button-camera-stop {
+	background-color: var(--bs-danger);
+	border: 1px solid var(--bs-danger);
+}
+
+.table thead th {
+	vertical-align: middle;
+    padding: 13px;
+    font-size: 15px;
+    color: #000;
+}
+.table tbody td {
+    padding: 16px;
+    font-size: 15px;
+    background: #fff;
+    vertical-align: middle;
+
+}
+

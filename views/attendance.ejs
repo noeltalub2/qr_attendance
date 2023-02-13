@@ -1,0 +1,205 @@
+<%-include ("./Include/Admin/head.ejs")%>
+
+  <body>
+    <%-include ("./Include/Admin/header.ejs")%>
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/dashboard">
+              <i class="bi bi-columns-gap"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/student">
+              <i class="bi bi-person-circle"></i>
+              <span>Student Management</span>
+            </a>
+          </li><!-- End Error 404 Page Nav -->
+
+          <li class="nav-item">
+            <a class="nav-link" href="/attendance">
+              <i class="bi bi-table"></i>
+
+              <span>Attendance Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/event">
+
+              <i class="bi bi-calendar-event"></i>
+              <span>Event Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+        </ul>
+
+      </aside><!-- End Sidebar-->
+      <main class="main" id="main">
+        <section class="section student">
+          <div class="row">
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Attendance Record</h5>
+                <div class="table-responsive-md">
+                  <table id="attendanceTable" class="table" style="width: 100%;">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Student ID</th>
+
+                        <th>Time in (AM)</th>
+                        <th>Time out (AM)</th>
+
+                        <th>Log Date</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%attendance_record.forEach((attendance)=> {%>
+                        <tr>
+                          <th>
+                            <%=attendance.id%>
+                          </th>
+                          <td>
+                            <%=attendance.student_id%>
+                          </td>
+                          <td>
+                            <%=attendance.time_in%>
+                          </td>
+                          <td>
+                            <%=attendance.time_out%>
+                          </td>
+                          <td>
+                            <%=attendance.log_date%>
+                          </td>
+
+                        </tr>
+                        <%})%>
+                    </tbody>
+                  </table>
+                </div>
+
+
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </main>
+
+
+      <%-include ("./Include/Admin/script.ejs")%>
+
+
+        <script>
+         
+          $(document).ready(function () {
+            $('#attendanceTable').DataTable({
+              dom: 'Bfrtip',
+              buttons: [
+                {
+                  extend: 'pdfHtml5',
+                  message: `Event: ${"Foundation"}\nDate: ${date()}`,
+                  title: `Attendance`,
+
+                  pageSize: "A4",
+                  text: 'Export to PDF',
+
+                  className: "btn btn-danger btn-sm px-3",
+                  customize: function (doc) {
+
+                    //Remove the title created by datatTables
+                    doc.content.splice(0, 1);
+                    //Create a date string that we use in the footer. Format is dd-mm-yyyy
+
+                    
+                    // A documentation reference can be found at
+                    // https://github.com/bpampuch/pdfmake#getting-started
+                    // Set page margins [left,top,right,bottom] or [horizontal,vertical]
+                    // or one number for equal spread
+                    // It's important to create enough space at the top for a header !!!
+                    doc.pageMargins = [35, 95, 35, 90];
+
+                    // Set the font size fot the entire document
+                    doc.defaultStyle.fontSize = 11;
+
+                    // Create a header object with 3 columns
+                    // Left side: Logo
+                    // Middle: brandname
+                    // Right side: A document title
+
+
+                    doc['header'] = (function () {
+                      return {
+                        columns: [
+
+                          {
+                            image: logo_2,
+                            width: 565,
+                            height: 75
+                          },
+                        ],
+                        margin: 10
+
+                      }
+                    });
+                    // Create a footer object with 2 columns
+                    // Left side: report creation date
+                    // Right side: current page and total pages
+                    doc['footer'] = (function (page, pages) {
+                      return {
+                        columns: [
+
+                          {
+                            image: logo,
+                            width: 565,
+                            height: 65,
+                          }
+                        ],
+                        margin: 10
+                      }
+                    });
+
+                    var objLayout = {};
+                    // Set the fontsize for the table header
+                    doc.styles.tableHeader.fillColor = "#fff";
+                    doc.styles.tableHeader.color = "#000";
+                    doc.styles.tableHeader.fontSize = 11;
+                    doc.content[1].table.widths = ['auto', '*', '*', '*', '*'];
+                    doc.styles.tableBodyOdd.fillColor = '#fff';
+                    doc.styles.tableBodyEven.fillColor = '#fff';
+                    doc.styles.tableBodyOdd.fillColor = '#fff';
+
+                    objLayout['hLineWidth'] = function (i) { return .5; };
+                    objLayout['vLineWidth'] = function (i) { return .5; };
+
+                    objLayout['paddingLeft'] = function (i) { return 10; };
+                    objLayout['paddingRight'] = function (i) { return 10; };
+
+                    objLayout['paddingTop'] = function (i) { return 3; };
+                    objLayout['paddingBottom'] = function (i) { return 3; };
+                    doc.content[1].layout = objLayout;
+
+
+                  }
+
+                },
+                {
+                  extend: 'excel',
+                  title: `Attendance Record`,
+                  text: 'Export to Excel', className: "btn btn-success btn-sm px-3",
+                }
+              ]
+            });
+          });
+        </script>
+  </body>
+
+  </html>

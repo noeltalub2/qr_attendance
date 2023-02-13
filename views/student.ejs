@@ -1,0 +1,170 @@
+<%-include ("./Include/Admin/head.ejs")%>
+
+  <body>
+
+    <%-include ("./Include/Admin/header.ejs")%>
+
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/dashboard">
+              <i class="bi bi-columns-gap"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+          <li class="nav-item">
+            <a class="nav-link" href="/student">
+              <i class="bi bi-person-circle"></i>
+              <span>Student Management</span>
+            </a>
+          </li><!-- End Error 404 Page Nav -->
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/attendance">
+              <i class="bi bi-table"></i>
+
+              <span>Attendance Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/event">
+
+              <i class="bi bi-calendar-event"></i>
+              <span>Event Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+        </ul>
+
+      </aside><!-- End Sidebar-->
+      <div class="main" id="main">
+        <section class="section student">
+          <div class="row">
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Student Record<a href="/insert" class="btn btn-sm btn-success float-end">Insert New
+                    User</a></h5>
+                <div class="table-responsive-md">
+                  <table id="studentTable" class="table" style="width:100%">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Degree</th>
+                        <th>Year / Section</th>
+
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <%student_record.forEach((student)=> {%>
+                        <tr>
+                          <th>
+                            <%=student.id%>
+                          </th>
+                          <td>
+                            <%=student.student_id%>
+                          </td>
+                          <td>
+                            <%=student.name%>
+                          </td>
+                          <td>
+                            <%=student.degree%>
+                          </td>
+                          <td>
+                            <%=student.year_section%>
+                          </td>
+
+                          <td>
+                            <div class="text-center">
+                              <div class="dropdown">
+                                <a class="text-secondary" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <i class="bi bi-three-dots-vertical"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item" href="/student/view/<%=student.student_id%>"><i
+                                        class="bi bi-eye"></i>View</a></li>
+                                  <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square"></i>Edit</a></li>
+                                  <li><button class="dropdown-item text-danger" onclick="confirm('<%=student.student_id%>')"><i class="bi bi-trash"></i>Delete</i></button></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </td>
+
+                        </tr>
+                        <%})%>
+
+
+
+                    </tbody>
+
+                  </table>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+
+      <%-include ("./Include/Admin/script.ejs")%>
+
+
+        <script>
+          const Toast = Swal.mixin({
+            width: 450,
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 5000,
+          })
+
+          $(document).ready(function () {
+            $('#studentTable').DataTable({});
+          });
+
+
+          function confirm(id) {
+            Swal.fire({
+              title: `Delete ${id}?`,
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                fetch("/student/delete", {
+                  method: "DELETE",
+                  body: JSON.stringify({ data: id }),
+                  headers: { "Content-Type": "application/json" },
+                })
+                  .then((res) => res.json())
+                  .then((response) => {
+                    if (response.status === "success") {
+                      Toast.fire({
+                        icon: 'success',
+                        title: "Successfully Deleted"
+                      })
+                      setTimeout(function() {
+                        window.location = "/student";
+                      },1000)
+                    }
+                  })
+              }
+            })
+          }
+        </script>
+  </body>
+
+  </html>
