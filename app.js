@@ -225,6 +225,49 @@ app.get("/attendance", async (req, res) => {
 	res.render("attendance", { attendance_record });
 });
 
+app.get("/event", async (req, res) => {
+	res.render("event");
+});
+
+app.post("/event", async (req, res) => {
+	const {
+		event_name,
+		event_date,
+		attendance_type,
+		time_in_am,
+		time_in_am_limit,
+		time_out_am,
+		time_out_am_limit,
+		time_in_pm,
+		time_in_pm_limit,
+		time_out_pm,
+		time_out_pm_limit,
+	} = req.body;
+
+	var data = {
+		event_name: event_name,
+		event_date: event_date,
+		attendance_type: attendance_type,
+		time_in_am: time_in_am,
+		time_in_am_limit: time_in_am_limit,
+		time_out_am: time_out_am,
+		time_out_am_limit: time_out_am_limit,
+		time_in_pm: time_in_pm,
+		time_in_pm_limit: time_in_pm_limit,
+		time_out_pm: time_out_pm,
+		time_out_pm_limit: time_out_pm_limit,
+
+	};
+
+	db.query("INSERT INTO event_list SET ?",data, (err,result) => {
+		if (err) {
+			console.log(err)
+		} else {
+			res.render("event_new")
+		}
+	})
+});
+
 app.listen(3000, () => {
 	console.log("Server listening on port 3000");
 });

@@ -1,0 +1,330 @@
+<%-include ("./Include/Admin/head.ejs")%>
+
+  <body>
+
+    <%-include ("./Include/Admin/header.ejs")%>
+
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/dashboard">
+              <i class="bi bi-columns-gap"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/student">
+              <i class="bi bi-person-circle"></i>
+              <span>Student Management</span>
+            </a>
+          </li><!-- End Error 404 Page Nav -->
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/attendance">
+              <i class="bi bi-table"></i>
+
+              <span>Attendance Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+          <li class="nav-item">
+            <a class="nav-link" href="/event">
+
+              <i class="bi bi-calendar-event"></i>
+              <span>Event Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+        </ul>
+
+      </aside><!-- End Sidebar-->
+      <div class="main" id="main">
+        <section class="section student">
+
+
+          <div class="row">
+            <div class="card">
+              <div class="card-body">
+
+                <h5 class="card-title">Event List</h5>
+                <div class="table-responsive-md">
+
+
+                  <table id="attendanceTable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Event Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Launch demo modal
+        </button>
+      </div>
+
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" data-bs-backdrop="static"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form method="post" class="needs-validation" novalidate>
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="col-md-12">
+                  <div class="mb-2">
+                    <label for="event_name" class="form-label fw-bold">Event Name</label>
+                    <input type="text" class="form-control" id="event_name" name="event_name" required autofocus>
+                    <div class="invalid-feedback">
+
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="col-md-12">
+                  <div class="mb-2">
+                    <label for="event_date" class="form-label fw-bold">Event Date</label>
+                    <input type="date" class="form-control" id="event_date" name="event_date" required>
+                    <div class="invalid-feedback">
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+                <div class="col-md-12 mb-2">
+
+                  <label for="attendance_type" class="form-label fw-bold">Attendance Type</label>
+                  <select onchange="getval(this)" class="form-select" name="attendance_type"
+                    aria-label="Default select example">
+
+                    <option value="WholeDay" selected>Whole Day</option>
+                    <option value="MorningOnly">Morning Only</option>
+                    <option value="AfternoonOnly">Afternoon Only</option>
+                  </select>
+
+                </div>
+                <div class="col-md-12">
+
+                  <div id="morning_only">
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="time_in_am" class="form-label fw-bold">Time In (AM)</label>
+                        <input type="time" min="00:00" max="11:59" value="07:45" class="form-control" id="time_in_am"
+                          name="time_in_am" required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="time_in_am_limit" class="form-label fw-bold">Limit Time (In Minutes)</label>
+                        <input type="number" class="form-control" id="time_in_am_limit" name="time_in_am_limit"
+                          required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="time_out_am" class="form-label fw-bold">Time Out (AM)</label>
+                        <input type="time" min="00:00" max="11:59" value="11:30" class="form-control" id="time_out_am"
+                          name="time_out_am" required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="time_out_am_limit" class="form-label fw-bold">Limit Time (In Minutes)</label>
+                        <input type="number" class="form-control" id="time_out_am_limit" name="time_out_am_limit"
+                          required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="afternoon_only">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label for="time_in_pm" class="form-label fw-bold">Time In (PM)</label>
+                        <input type="time" min="12:00" max="24:00" value="12:45" class="form-control" id="time_in_pm"
+                          name="time_in_pm" required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="time_in_pm_limit" class="form-label fw-bold">Limit Time (In
+                          Minutes)</label>
+                        <input type="number" class="form-control" id="time_in_pm_limit" name="time_in_pm_limit"
+                          required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="time_out_pm" class="form-label fw-bold">Time Out (PM)</label>
+                        <input type="time" min="12:00" max="24:00" value="16:45" class="form-control" id="time_out_pm"
+                          name="time_out_pm" required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="time_out_pm_limit" class="form-label fw-bold">Limit Time (In
+                          Minutes)</label>
+                        <input type="number" class="form-control" id="time_out_pm_limit" name="time_out_pm_limit"
+                          required>
+
+                        <div class="invalid-feedback">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Add Event</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+
+      <%-include ("./Include/Admin/script.ejs")%>
+        <script>
+
+
+
+          (() => {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.from(forms).forEach(form => {
+              form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+              }, false)
+            })
+          })()
+
+
+          $(function () {
+            var dtToday = new Date();
+
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if (month < 10)
+              month = '0' + month.toString();
+            if (day < 10)
+              day = '0' + day.toString();
+
+            var maxDate = year + '-' + month + '-' + day;
+
+
+
+            $('#event_date').attr('min', maxDate);
+            $('#event_date_end').attr('min', maxDate);
+          });
+
+
+          function getval(el) {
+            if (el.value === "WholeDay") {
+
+
+              document.getElementById("time_in_am").removeAttribute("disabled")
+              document.getElementById("time_in_am_limit").removeAttribute("disabled")
+              document.getElementById("time_out_am_limit").removeAttribute("disabled")
+              document.getElementById("time_out_am").removeAttribute("disabled")
+
+              document.getElementById("time_in_pm").removeAttribute("disabled")
+              document.getElementById("time_in_pm_limit").removeAttribute("disabled")
+              document.getElementById("time_out_pm_limit").removeAttribute("disabled")
+              document.getElementById("time_out_pm").removeAttribute("disabled")
+              
+              document.getElementById("morning_only").style.display = 'block'
+              document.getElementById("afternoon_only").style.display = 'block'
+            } else if (el.value === "MorningOnly") {
+
+
+              document.getElementById("time_in_am").removeAttribute("disabled")
+              document.getElementById("time_in_am_limit").removeAttribute("disabled")
+              document.getElementById("time_out_am_limit").removeAttribute("disabled")
+              document.getElementById("time_out_am").removeAttribute("disabled")
+
+              document.getElementById("time_in_pm").setAttribute("disabled", "")
+              document.getElementById("time_in_pm_limit").setAttribute("disabled", "")
+              document.getElementById("time_out_pm_limit").setAttribute("disabled", "")
+              document.getElementById("time_out_pm").setAttribute("disabled", "")
+
+              document.getElementById("morning_only").style.display = 'block'
+              document.getElementById("afternoon_only").style.display = 'none'
+            } else if (el.value === "AfternoonOnly") {
+
+
+              document.getElementById("time_in_am").setAttribute("disabled", "")
+              document.getElementById("time_in_am_limit").setAttribute("disabled", "")
+              document.getElementById("time_out_am_limit").setAttribute("disabled", "")
+              document.getElementById("time_out_am").setAttribute("disabled", "")
+
+              document.getElementById("time_in_pm").removeAttribute("disabled")
+              document.getElementById("time_in_pm_limit").removeAttribute("disabled")
+              document.getElementById("time_out_pm_limit").removeAttribute("disabled")
+              document.getElementById("time_out_pm").removeAttribute("disabled")
+
+              document.getElementById("morning_only").style.display = 'none'
+              document.getElementById("afternoon_only").style.display = 'block'
+
+            }
+          }
+        </script>
+
+  </body>
+
+  </html>

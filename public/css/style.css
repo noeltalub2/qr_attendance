@@ -1215,3 +1215,14 @@ div.dt-buttons {
 	float: left;
 	margin-bottom: .5rem;
 }
+
+
+.was-validated .form-control:valid {
+	background-image: none;
+	border-color: #ced4da;
+}
+
+.was-validated .form-select:valid:not([multiple]):not([size]) {
+	background-image: none;
+	border-color: #ced4da;
+}
