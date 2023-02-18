@@ -59,7 +59,7 @@
       })
         .then((res) => res.json())
         .then((response) => {
-  
+          document.getElementById('mySound').play();
           if (response.status === "Invalid") {
             Toast.fire({
               icon: 'error',
