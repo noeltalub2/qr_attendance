@@ -55,13 +55,14 @@
                 <div class="table-responsive-md">
 
 
-                  <table id="attendanceTable" class="table table-bordered">
+                  <table id="eventTable" class="table">
                     <thead>
                       <tr>
-                        <th>No.</th>
+                        
                         <th>Date</th>
-                        <th>Event Name</th>
-                        <th>Description</th>
+                        <th>Code</th>
+                        <th>Name</th>
+
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -69,33 +70,20 @@
                     <tbody>
                       <%event_record.forEach((events)=> {%>
                         <tr>
+                       
                           <th>
-                            <%=events.event_id%>
+                            <%=events.event_date%>
                           </th>
                           <td>
-                            <%=events.event_date%>
+                            <%=events.event_code%>
                           </td>
                           <td>
                             <%=events.event_name%>
                           </td>
-                          <td>
-                            <small class="fw-bold">Type:
-                              <%=events.attendance_type%>
-                            </small><br>
-                            <small class="fw-bold">Morning</small><br>
-                            <small>Time In: <%=events.time_in_am_start%> to <%=events.time_in_am_end%>
-                            </small><br>
-                            <small>Time Out: <%=events.time_out_am_start%> to <%=events.time_out_am_end%>
-                            </small><br>
-                            <small class="fw-bold">Afternoon</small><br>
-                            <small>Time In: <%=events.time_in_pm_start%> to <%=events.time_in_pm_end%></small><br>
-                            <small>Time Out: <%=events.time_out_pm_start%> to <%=events.time_out_pm_end%></small><br>
 
 
-
-                          </td>
-                          <td>
-                            <%if (events.event_date> date) {%>
+                          <td class="text-center">
+                            <%if (events.event_date > date) {%>
                               <span class="badge text-bg-warning">Pending</span>
                               <%}else if (events.event_date < date){%>
                                 <span class="badge text-bg-success">Done</span>
@@ -111,10 +99,15 @@
                                   <i class="bi bi-three-dots-vertical"></i>
                                 </a>
                                 <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="/student/"><i class="bi bi-eye"></i>View</a></li>
-                                  <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square"></i>Edit</a></li>
-                                  <li><button class="dropdown-item text-danger"><i
+                                  <li><a class="dropdown-item" href="/event/view/<%=events.event_code%>"><i
+                                        class="bi bi-eye"></i>View</a></li>
+                                  <li><a class="dropdown-item" href="/event/edit/<%=events.event_code%>"><i
+                                        class="bi bi-pencil-square"></i>Edit</a></li>
+                                  <li>
+                                  <li><button class="dropdown-item text-danger"
+                                      onclick="confirm('<%=events.event_code%>')"><i
                                         class="bi bi-trash"></i>Delete</i></button></li>
+                                  </li>
                                 </ul>
                               </div>
                             </div>
@@ -136,15 +129,9 @@
       <%-include ("./Include/Admin/script.ejs")%>
         <script>
 
-          const Toast = Swal.mixin({
-            width: 450,
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 5000,
-          })
 
-   
+
+
           if ('<%-success_msg%>' != '') {
 
             Toast.fire({
@@ -152,6 +139,43 @@
               title: "<%=success_msg%>"
             })
 
+          }
+
+          $(document).ready(function () {
+            $('#eventTable').DataTable();
+          });
+
+
+          function confirm(id) {
+            Swal.fire({
+              title: `Delete event ${id}?`,
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                fetch("/event/delete", {
+                  method: "DELETE",
+                  body: JSON.stringify({ data: id }),
+                  headers: { "Content-Type": "application/json" },
+                })
+                  .then((res) => res.json())
+                  .then((response) => {
+                    if (response.status === "success") {
+                      Toast.fire({
+                        icon: 'success',
+                        title: "Successfully Deleted"
+                      })
+                      setTimeout(function () {
+                        window.location = "/event";
+                      }, 1000)
+                    }
+                  })
+              }
+            })
           }
         </script>
 

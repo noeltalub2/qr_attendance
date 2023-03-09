@@ -1,0 +1,135 @@
+<%-include ("./Include/Admin/head.ejs")%>
+
+    <body>
+
+        <%-include ("./Include/Admin/header.ejs")%>
+
+            <!-- ======= Sidebar ======= -->
+            <aside id="sidebar" class="sidebar">
+
+                <ul class="sidebar-nav" id="sidebar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/dashboard">
+                            <i class="bi bi-columns-gap"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard Nav -->
+                    </li><!-- End Components Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/student">
+                            <i class="bi bi-person-circle"></i>
+                            <span>Student Management</span>
+                        </a>
+                    </li><!-- End Error 404 Page Nav -->
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/attendance">
+                            <i class="bi bi-table"></i>
+
+                            <span>Attendance Management</span>
+                        </a>
+                    </li><!-- End Blank Page Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/event">
+
+                            <i class="bi bi-calendar-event"></i>
+                            <span>Event Management</span>
+                        </a>
+                    </li><!-- End Blank Page Nav -->
+                </ul>
+
+            </aside><!-- End Sidebar-->
+            <div class="main" id="main">
+                <section class="section student">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/student"><i class="bi bi-arrow-left"></i> Go Back</a>
+                            </li>
+
+                        </ol>
+                    </nav>
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Edit Student</h5>
+                                <%-include ("./Include/Admin/message.ejs")%>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="input-container">
+                                                
+                                                <form action="/student/edit" method="post" class="needs-validation"
+                                                    novalidate>
+                                                    <div class="mb-2">
+                                                        <label for="student_id" class="form-label">Student
+                                                            ID</label>
+                                                        <input class="form-control " type="text"
+                                                            name="student_id" id="student_id" autofocus readonly value="<%=student_record.student_id%>"
+                                                            minlength="9" maxlength="9"></input>
+                                                    </div>
+
+                                                    <div class="mb-2">
+                                                        <label for="name" class="form-label">Student
+                                                            Name</label>
+                                                        <input class="form-control" type="text"
+                                                            name="name" id="name" value="<%=student_record.name%>" required></input>
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label for="section" class="form-label">Degree</label>
+
+                                                        <input class="form-control" type="text"
+                                                            name="degree" id="degree" value="<%=student_record.degree%>" required></input>
+
+                                                    </div>
+                                                    <div class="mb-2">
+                                                        <label for="course" class="form-label">Year &
+                                                            Section</label>
+                                                        <input class="form-control" type="text"
+                                                            name="year_section" id=" year_section" value="<%=student_record.year_section%>" required
+                                                            minlength="3" maxlength="3"></input>
+                                                    </div>
+
+
+
+                                                    <input class="btn btn-success btn-sm" id="update" type="submit"
+                                                        value="Update"></input>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                     
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <%-include ("./Include/Admin/script.ejs")%>
+                <script>
+
+                    // Example starter JavaScript for disabling form submissions if there are invalid fields
+                    (() => {
+                        'use strict'
+
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        const forms_input = document.querySelectorAll('.needs-validation')
+
+                        // Loop over them and prevent submission
+                        Array.from(forms_input).forEach(form => {
+                            form.addEventListener('submit', event => {
+                                if (!form.checkValidity()) {
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                }
+
+                                form.classList.add('was-validated')
+                            }, false)
+                        })
+
+
+                    })()
+                </script>
+    </body>
+
+    </html>

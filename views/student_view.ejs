@@ -57,11 +57,13 @@
                 <div class="row">
                   <div class="col-lg-6">
                     <h5 class="card-title">Student Details</h5>
-                    <p class="fw-bold mb-2">Student ID&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp;<span class="fw-normal" id="student_id">
+                    <p class="fw-bold mb-2">Student ID&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp;<span class="fw-normal"
+                        id="student_id">
                         <%=student_record.student_id%>
                       </span></p>
 
-                    <p class="fw-bold mb-2">Full Name&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp;<span class="fw-normal" id="student_name">
+                    <p class="fw-bold mb-2">Full Name&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:&nbsp;<span
+                        class="fw-normal" id="student_name">
                         <%=student_record.name%>
                       </span></p>
                     <p class="fw-bold mb-2">Degree&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -71,9 +73,7 @@
                     <p class="fw-bold mb-2">Year / Section&nbsp; :&nbsp;<span class="fw-normal" id="student_course">
                         <%=student_record.year_section%>
                       </span></p>
-                    <small>Joined Date: <span>
-                        <%=student_record.created_date%>
-                      </span></small>
+                   
                   </div>
 
 
@@ -100,34 +100,42 @@
                 <h5 class="card-title">Attendance Record</h5>
                 <div class="table-responsive-md">
 
-         
-                <table id="attendanceTable" class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Event Name</th>
-                      <th>Time In (AM)</th>
-                      <th>Time Out (AM)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <%attendance_record.forEach((attendance)=> {%>
+
+                  <table id="attendanceTable" class="table table-bordered">
+                    <thead>
                       <tr>
-                        <td>
-                          <%=attendance.log_date%>
-                        </td>
-                        <td>Foundation</td>
-                        <td>
-                          <%=attendance.time_in%>
-                        </td>
-                        <td>
-                          <%=attendance.time_out%>
-                        </td>
+                        <th>Date</th>
+                        <th>Event Name</th>
+                        <th>Time In (AM)</th>
+                        <th>Time Out (AM)</th>
+                        <th>Time In (PM)</th>
+                        <th>Time Out (PM)</th>
                       </tr>
-                      <%})%>
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      <%attendance_record.forEach((attendance)=> {%>
+                        <tr>
+                          <td>
+                            <%=attendance.log_date%>
+                          </td>
+                          <td><%=attendance.event_code%></td>
+                          <td>
+                            <%=attendance.time_in_am%>
+                          </td>
+                          <td>
+                            <%=attendance.time_out_am%>
+                          </td>
+                          <td>
+                            <%=attendance.time_in_pm%>
+                          </td>
+                          <td>
+                            <%=attendance.time_out_pm%>
+                          </td>
+                        </tr>
+                        <%})%>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -172,14 +180,14 @@
                     doc.content.splice(0, 1);
                     //Create a date string that we use in the footer. Format is dd-mm-yyyy
 
-              
+
 
                     // A documentation reference can be found at
                     // https://github.com/bpampuch/pdfmake#getting-started
                     // Set page margins [left,top,right,bottom] or [horizontal,vertical]
                     // or one number for equal spread
                     // It's important to create enough space at the top for a header !!!
-                    doc.pageMargins = [35, 95, 35, 90];
+                    doc.pageMargins = [30, 95, 30, 90];
 
                     // Set the font size fot the entire document
                     doc.defaultStyle.fontSize = 11;
@@ -200,7 +208,7 @@
                             height: 75
                           },
                         ],
-                        margin: 10
+                        margin: 18
 
                       }
                     });
@@ -214,10 +222,10 @@
                           {
                             image: logo,
                             width: 565,
-                            height: 65,
+                            height: 75,
                           }
                         ],
-                        margin: 10
+                        margin: 18  
                       }
                     });
 
@@ -226,7 +234,7 @@
                     doc.styles.tableHeader.fillColor = "#fff";
                     doc.styles.tableHeader.color = "#000";
                     doc.styles.tableHeader.fontSize = 11;
-                    doc.content[1].table.widths = ['auto', '*', '*', '*'];
+                    doc.content[1].table.widths = ['auto', '*', '*', '*','*','*'];
                     doc.styles.tableBodyOdd.fillColor = '#fff';
                     doc.styles.tableBodyEven.fillColor = '#fff';
                     doc.styles.tableBodyOdd.fillColor = '#fff';

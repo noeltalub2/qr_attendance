@@ -1,14 +1,11 @@
-const express = require("express");
-const router = express.Router();
+const express = require('express');
+const homeController = require('../controller/home');
 
-const homeController = require("../controller/home");
+const router = express.Router()
 
-router.get("/", homeController.getHome);
-router.post("/qrcode", homeController.postQrCode);
+router.get('/unauthorized', homeController.getError403);
 
-router.get("/insert", homeController.getInsert);
-router.post("/insert", homeController.postInsert);
-
-router.post("/data", homeController.postData);
+// should be in last
+router.use('/', homeController.getError404);
 
 module.exports = router;

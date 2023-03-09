@@ -1,3 +1,5 @@
+const moment = require("../public/vendor/moment/moment.js")
+
 const zeroFill = (n) => {
 	return ("0" + n).slice(-2);
 };
@@ -21,18 +23,12 @@ const time = () => {
 };
 
 const date = () => {
-	const now = new Date();
-
-	var currentYear = now.getFullYear();
-	var currentMonth = zeroFill(now.getMonth() + 1);
-	var currentDay = now.getDate();
-
-	var fullDate = `${currentYear}-${currentMonth}-${currentDay}`;
-	return fullDate;
+	var now = new Date();
+	var fullDate = moment(now).format("YYYY-MM-DD");
+	return fullDate
 };
 
 const convertTime = (time) => {
-
 	if (time) {
 		var hours = `${time[0]}${time[1]}`;
 
@@ -52,4 +48,10 @@ const convertTime = (time) => {
 	}
 };
 
-module.exports = { time, date, convertTime };
+const convertDate = (time) => {
+
+	var fullDate = moment(time).format("MMMM DD, YYYY");
+	return fullDate
+}
+
+module.exports = { time, date, convertTime,convertDate };

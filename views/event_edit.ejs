@@ -52,8 +52,8 @@
           <div class="row">
             <div class="card">
               <div class="card-body">
-                <form method="post" class="needs-validation" id="form" novalidate>
-                  <h5 class="card-title">Insert New Event</h5>
+                <form method="post" action="/event/edit" class="needs-validation" id="form" novalidate>
+                  <h5 class="card-title">Edit Event</h5>
                   <div class="col-md-6">
                     <%-include ("./Include/Admin/message.ejs")%>
                   </div>
@@ -64,16 +64,19 @@
                         <div class="mb-2">
                           <label for="event_code" class="form-label fw-bold">Event Code</label>
                           <input type="text" class="form-control" id="event_code" name="event_code"
-                            oninput="this.value = this.value.toUpperCase()" required autofocus>
+                            oninput="this.value = this.value.toUpperCase()" value="<%=event_record.event_code%>"
+                            readonly>
                           <div class="invalid-feedback">
 
                           </div>
                         </div>
+
                       </div>
                       <div class="col">
                         <div class="mb-2">
                           <label for="event_date" class="form-label fw-bold">Event Date</label>
-                          <input type="date" class="form-control" id="event_date" name="event_date" required>
+                          <input type="date" class="form-control" id="event_date" name="event_date"
+                            value="<%=event_record.event_date%>" readonly>
                           <div class="invalid-feedback">
 
                           </div>
@@ -82,13 +85,13 @@
                     </div>
 
 
-
                   </div>
+
                   <div class="col-md-6">
                     <div class="mb-2">
                       <label for="event_name" class="form-label fw-bold">Event Name</label>
                       <input type="text" class="form-control" id="event_name" name="event_name"
-                        oninput="this.value = this.value.toUpperCase()" required>
+                        oninput="this.value = this.value.toUpperCase()" value="<%=event_record.event_name%>" required>
                       <div class="invalid-feedback">
 
                       </div>
@@ -100,9 +103,11 @@
                   <div class="col-md-6 mb-2">
 
                     <label for="attendance_type" class="form-label fw-bold">Attendance Type</label>
-                    <select onchange="getval(this)" class="form-select" name="attendance_type" required>
+                    <select id="select_attendance" onchange="getval(this)" class="form-select" name="attendance_type"
+                      required>
 
-                      <option value="WholeDay" selected>Whole Day</option>
+
+                      <option value="WholeDay">Whole Day</option>
                       <option value="MorningOnly">Morning Only</option>
                       <option value="AfternoonOnly">Afternoon Only</option>
                     </select>
@@ -115,8 +120,8 @@
                       <div class="row">
                         <div class="col-md-6">
                           <label for="time_in_am_start" class="form-label fw-bold">Time In Start (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="08:00" class="form-control"
-                            id="time_in_am_start" name="time_in_am_start" required>
+                          <input type="time" min="00:00" max="11:59" class="form-control" id="time_in_am_start"
+                            name="time_in_am_start" required>
 
                           <div class="invalid-feedback">
 
@@ -125,8 +130,8 @@
 
                         <div class="col-md-6">
                           <label for="time_in_am_end" class="form-label fw-bold">Time In End (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="08:30" class="form-control"
-                            id="time_in_am_end" name="time_in_am_end" required>
+                          <input type="time" min="00:00" max="11:59" class="form-control" id="time_in_am_end"
+                            name="time_in_am_end" required>
 
                           <div class="invalid-feedback">
 
@@ -134,8 +139,8 @@
                         </div>
                         <div class="col-md-6">
                           <label for="time_out_am_start" class="form-label fw-bold">Time Out Start (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="11:00" class="form-control"
-                            id="time_out_am_start" name="time_out_am_start" required>
+                          <input type="time" min="00:00" max="11:59" class="form-control" id="time_out_am_start"
+                            name="time_out_am_start" required>
 
                           <div class="invalid-feedback">
 
@@ -143,8 +148,8 @@
                         </div>
                         <div class="col-md-6">
                           <label for="time_out_am_end" class="form-label fw-bold">Time Out End (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="11:30" class="form-control"
-                            id="time_out_am_end" name="time_out_am_end" required>
+                          <input type="time" min="00:00" max="11:59" class="form-control" id="time_out_am_end"
+                            name="time_out_am_end" required>
 
                           <div class="invalid-feedback">
 
@@ -157,8 +162,8 @@
                       <div class="row">
                         <div class="col-md-6">
                           <label for="time_in_pm_start" class="form-label fw-bold">Time In Start (PM)</label>
-                          <input type="time" min="12:00" max="24:00" value="13:00" class="form-control"
-                            id="time_in_pm_start" name="time_in_pm_start" required>
+                          <input type="time" min="12:00" max="24:00" class="form-control" id="time_in_pm_start"
+                            name="time_in_pm_start" required>
 
                           <div class="invalid-feedback">
 
@@ -166,8 +171,8 @@
                         </div>
                         <div class="col-md-6">
                           <label for="time_in_pm_end" class="form-label fw-bold">Time In End (PM)</label>
-                          <input type="time" min="12:00" max="24:00" value="13:30" class="form-control"
-                            id="time_in_pm_end" name="time_in_pm_end" required>
+                          <input type="time" min="12:00" max="24:00" class="form-control" id="time_in_pm_end"
+                            name="time_in_pm_end" required>
 
                           <div class="invalid-feedback">
 
@@ -175,8 +180,8 @@
                         </div>
                         <div class="col-md-6">
                           <label for="time_out_pm_start" class="form-label fw-bold">Time Out Start (PM)</label>
-                          <input type="time" min="12:00" max="24:00" value="16:30" class="form-control"
-                            id="time_out_pm_start" name="time_out_pm_start" required>
+                          <input type="time" min="12:00" max="24:00" class="form-control" id="time_out_pm_start"
+                            name="time_out_pm_start" required>
 
                           <div class="invalid-feedback">
 
@@ -184,8 +189,8 @@
                         </div>
                         <div class="col-md-6">
                           <label for="time_out_pm_end" class="form-label fw-bold">Time Out End (AM)</label>
-                          <input type="time" min="12:00" max="24:00" value="17:00" class="form-control"
-                            id="time_out_pm_end" name="time_out_pm_end" required>
+                          <input type="time" min="12:00" max="24:00" class="form-control" id="time_out_pm_end"
+                            name="time_out_pm_end" required>
 
                           <div class="invalid-feedback">
 
@@ -209,8 +214,68 @@
 
       <%-include ("./Include/Admin/script.ejs")%>
 
-
         <script>
+          $(function () {
+            document.getElementById("select_attendance").value = '<%-event_record.attendance_type%>';
+
+            if ('<%-event_record.attendance_type%>' === "WholeDay") {
+              document.getElementById("time_in_am_start").removeAttribute("disabled");
+              document.getElementById("time_in_am_end").removeAttribute("disabled");
+              document
+                .getElementById("time_out_am_start")
+                .removeAttribute("disabled");
+              document.getElementById("time_out_am_end").removeAttribute("disabled");
+
+              document.getElementById("time_in_pm_start").removeAttribute("disabled");
+              document.getElementById("time_in_pm_end").removeAttribute("disabled");
+              document
+                .getElementById("time_out_pm_start")
+                .removeAttribute("disabled");
+              document.getElementById("time_out_pm_end").removeAttribute("disabled");
+
+              document.getElementById("morning_only").style.display = "block";
+              document.getElementById("afternoon_only").style.display = "block";
+            } else if ('<%-event_record.attendance_type%>' === "MorningOnly") {
+              document.getElementById("time_in_am_start").removeAttribute("disabled");
+              document.getElementById("time_in_am_end").removeAttribute("disabled");
+              document
+                .getElementById("time_out_am_start")
+                .removeAttribute("disabled");
+              document.getElementById("time_out_am_end").removeAttribute("disabled");
+
+              document
+                .getElementById("time_in_pm_start")
+                .setAttribute("disabled", "");
+              document.getElementById("time_in_pm_end").setAttribute("disabled", "");
+              document
+                .getElementById("time_out_pm_start")
+                .setAttribute("disabled", "");
+              document.getElementById("time_out_pm_end").setAttribute("disabled", "");
+
+              document.getElementById("morning_only").style.display = "block";
+              document.getElementById("afternoon_only").style.display = "none";
+            } else if ('<%-event_record.attendance_type%>' === "AfternoonOnly") {
+              document
+                .getElementById("time_in_am_start")
+                .setAttribute("disabled", "");
+              document.getElementById("time_in_am_end").setAttribute("disabled", "");
+              document
+                .getElementById("time_out_am_start")
+                .setAttribute("disabled", "");
+              document.getElementById("time_out_am_end").setAttribute("disabled", "");
+
+              document.getElementById("time_in_pm_start").removeAttribute("disabled");
+              document.getElementById("time_in_pm_end").removeAttribute("disabled");
+              document
+                .getElementById("time_out_pm_start")
+                .removeAttribute("disabled");
+              document.getElementById("time_out_pm_end").removeAttribute("disabled");
+
+              document.getElementById("morning_only").style.display = "none";
+              document.getElementById("afternoon_only").style.display = "block";
+            }
+          }
+          );
 
           function getval(el) {
 
@@ -272,8 +337,36 @@
               document.getElementById("afternoon_only").style.display = "block";
             }
           }
+          
+          const convertTime12to24 = (time12h) => moment(time12h, 'hh:mm A').format('HH:mm');
 
-        </script>
+          document.getElementById("time_in_am_start").value = convertTime12to24(
+            "<%-event_record.time_in_am_start%>"
+          );
+          document.getElementById("time_in_am_end").value = convertTime12to24(
+            "<%-event_record.time_in_am_end%>"
+          );
+          document.getElementById("time_out_am_start").value = convertTime12to24(
+            "<%-event_record.time_out_am_start%>"
+          );
+          document.getElementById("time_out_am_end").value = convertTime12to24(
+            "<%-event_record.time_out_am_end%>"
+          );
+
+          document.getElementById("time_in_pm_start").value = convertTime12to24(
+            "<%-event_record.time_in_pm_start%>"
+          );
+          document.getElementById("time_in_pm_end").value = convertTime12to24(
+            "<%-event_record.time_in_pm_end%>"
+          );
+          document.getElementById("time_out_pm_start").value = convertTime12to24(
+            "<%-event_record.time_out_pm_start%>"
+          );
+          document.getElementById("time_out_pm_end").value = convertTime12to24(
+            "<%-event_record.time_out_pm_end%>"
+          );</script>
+
+
   </body>
 
   </html>

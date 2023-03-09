@@ -1,43 +1,44 @@
 <%-include ("./Include/Admin/head.ejs")%>
+
   <body>
     <%-include ("./Include/Admin/header.ejs")%>
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+      <!-- ======= Sidebar ======= -->
+      <aside id="sidebar" class="sidebar">
 
-      <ul class="sidebar-nav" id="sidebar-nav">
+        <ul class="sidebar-nav" id="sidebar-nav">
 
-        <li class="nav-item">
-          <a class="nav-link " href="/dashboard">
-            <i class="bi bi-columns-gap"></i>
-            <span>Dashboard</span>
-          </a>
-        </li>
-        <!-- End Dashboard Nav -->
-        </li><!-- End Components Nav -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="/student">
-            <i class="bi bi-person-circle"></i>
-            <span>Student Management</span>
-          </a>
-        </li><!-- End Error 404 Page Nav -->
+          <li class="nav-item">
+            <a class="nav-link " href="/dashboard">
+              <i class="bi bi-columns-gap"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <!-- End Dashboard Nav -->
+          </li><!-- End Components Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/student">
+              <i class="bi bi-person-circle"></i>
+              <span>Student Management</span>
+            </a>
+          </li><!-- End Error 404 Page Nav -->
 
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="/attendance">
-            <i class="bi bi-table"></i>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/attendance">
+              <i class="bi bi-table"></i>
 
-            <span>Attendance Management</span>
-          </a>
-        </li><!-- End Blank Page Nav -->
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="/event">
+              <span>Attendance Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/event">
 
-            <i class="bi bi-calendar-event"></i>
-            <span>Event Management</span>
-          </a>
-        </li><!-- End Blank Page Nav -->
-      </ul>
+              <i class="bi bi-calendar-event"></i>
+              <span>Event Management</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
+        </ul>
 
-    </aside><!-- End Sidebar-->
+      </aside><!-- End Sidebar-->
 
       <main id="main" class="main">
         <section class="section dashboard">
@@ -53,7 +54,9 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>4</h6>
+                      <h6>
+                        <%=student_count%>
+                      </h6>
 
                     </div>
                   </div>
@@ -70,10 +73,12 @@
                   <h5 class="card-title">Total Attendee Today</h5>
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-people"></i>
+                      <i class="bi bi-file-earmark-spreadsheet"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>16</h6>
+                      <h6>
+                        <%=attendance_count%>
+                      </h6>
                     </div>
                   </div>
                 </div>
@@ -90,7 +95,9 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>16</h6>
+                      <h6>
+                        <%=degree_count%>
+                      </h6>
                     </div>
                   </div>
                 </div>
@@ -107,7 +114,9 @@
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>16</h6>
+                      <h6>
+                        <%=section_count%>
+                      </h6>
                     </div>
                   </div>
                 </div>
@@ -115,227 +124,101 @@
             </div>
             <!-- End Inactive Card -->
           </div>
+
           <div class="row">
-            <div class="col-lg-6">
+
+            <div class="col-lg-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">TOTAL STUDENT BY COURSE</h5>
-                  <div id="barChart" style="min-height: 400px;" class="echart"></div>
+                  <h5 class="card-title">RECENT NEW USER <a href="/student"
+                      class="btn btn-success btn-sm float-end">View
+                      All</a></h5>
+
+                  <!-- Table with stripped rows -->
+                  <table class="table ">
+                    <thead>
+                      <tr>
+
+                        <th scope="col">Student ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Degree</th>
+                        <th scope="col">Year & Section</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%recent_new_user.forEach((student)=> {%>
+                        <tr>
+                          <th scope="row">
+                            <%=student.student_id%>
+                          </th>
+                          <td>
+                            <%=student.name%>
+                          </td>
+                          <td>
+                            <%=student.degree%>
+                              </th>
+                          <td>
+                            <%=student.year_section%>
+                          </td>
+
+                        </tr>
+                        <%})%>
+                    </tbody>
+                  </table>
+
+
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">TOTAL ATTENDANCE BY THIS WEEK</h5>
-                  <div id="areaChart" style="min-height: 400px;" class="echart"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">ATTENDANCE COMPARISON</h5>
-                  <!-- Vertical Bar Chart -->
-                  <div id="verticalBarChart" style="min-height: 400px;" class="echart"></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Donut Chart</h5>
-                  <!-- Donut Chart -->
-                  <div id="donutChart" style="min-height: 400px;" class="echart"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-8">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title">RECENT NEW USER <button class="btn btn-success btn-sm float-end">View
-                          All</button></h5>
+                  <h5 class="card-title">RECENT ATTENDANCE <a href="/attendance"
+                      class="btn btn-success btn-sm float-end">View
+                      All</a></h5>
 
-                      <!-- Table with stripped rows -->
-                      <table class="table ">
-                        <thead>
-                          <tr >
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Start Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Bridie Kessler</td>
-                            <td>Developer</td>
-                            <td>35</td>
-                            <td>2014-12-05</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Ashleigh Langosh</td>
-                            <td>Finance</td>
-                            <td>45</td>
-                            <td>2011-08-12</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td>Angus Grady</td>
-                            <td>HR</td>
-                            <td>34</td>
-                            <td>2012-06-11</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">5</th>
-                            <td>Raheem Lehner</td>
-                            <td>Dynamic Division Officer</td>
-                            <td>47</td>
-                            <td>2011-04-19</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <!-- End Table with stripped rows -->
+                  <!-- Table with stripped rows -->
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Student ID</th>
+                        <th scope="col">Event Code</th>
+                        <th scope="col">Status</th>
 
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title">RECENT ATTENDANCE <button class="btn btn-success btn-sm float-end">View
-                          All</button></h5>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <%recent_attendance.forEach((attendance)=> {%>
+                        <tr>
 
-                      <!-- Table with stripped rows -->
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Position</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Start Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>28</td>
-                            <td>2016-05-25</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Bridie Kessler</td>
-                            <td>Developer</td>
-                            <td>35</td>
-                            <td>2014-12-05</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>Ashleigh Langosh</td>
-                            <td>Finance</td>
-                            <td>45</td>
-                            <td>2011-08-12</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td>Angus Grady</td>
-                            <td>HR</td>
-                            <td>34</td>
-                            <td>2012-06-11</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">5</th>
-                            <td>Raheem Lehner</td>
-                            <td>Dynamic Division Officer</td>
-                            <td>47</td>
-                            <td>2011-04-19</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <!-- End Table with stripped rows -->
+                          <td>
+                            <%=attendance.log_date%>
+                          </td>
+                          <td>
+                            <%=attendance.student_id%>
+                          </td>
+                          <td>
+                            <%=attendance.event_code%>
+                          </td>
+                          <td>
+                            <%if (attendance.status==='1' ) {%>
+                              <span>TIME IN (AM)</span>
+                              <%} else if (attendance.status==='2' ) {%>
+                                <span>TIME OUT (AM)</span>
+                                <%} else if (attendance.status==='3' ) {%>
+                                  <span>TIME IN (AM)</span>
+                                  <%} else if (attendance.status==='4' ) {%>
+                                    <span>TIME OUT (PM)</span>
+                                    <%}%>
 
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <div class="card">
+                          </td>
 
-
-                <div class="card-body">
-                  <h5 class="card-title">Recent Activity</h5>
-
-                  <div class="activity">
-
-                    <div class="activity-item d-flex">
-                      <div class="activite-label">32 min</div>
-                      <i class="bi bi-circle-fill activity-badge text-success align-self-start"></i>
-                      <div class="activity-content">
-                        Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                      </div>
-                    </div><!-- End activity item-->
-
-                    <div class="activity-item d-flex">
-                      <div class="activite-label">56 min</div>
-                      <i class="bi bi-circle-fill activity-badge text-danger align-self-start"></i>
-                      <div class="activity-content">
-                        Voluptatem blanditiis blanditiis eveniet
-                      </div>
-                    </div><!-- End activity item-->
-
-                    <div class="activity-item d-flex">
-                      <div class="activite-label">2 hrs</div>
-                      <i class="bi bi-circle-fill activity-badge text-primary align-self-start"></i>
-                      <div class="activity-content">
-                        Voluptates corrupti molestias voluptatem
-                      </div>
-                    </div><!-- End activity item-->
-
-                    <div class="activity-item d-flex">
-                      <div class="activite-label">1 day</div>
-                      <i class="bi bi-circle-fill activity-badge text-info align-self-start"></i>
-                      <div class="activity-content">
-                        Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
-                      </div>
-                    </div><!-- End activity item-->
-
-                    <div class="activity-item d-flex">
-                      <div class="activite-label">2 days</div>
-                      <i class="bi bi-circle-fill activity-badge text-warning align-self-start"></i>
-                      <div class="activity-content">
-                        Est sit eum reiciendis exercitationem
-                      </div>
-                    </div><!-- End activity item-->
-
-                    <div class="activity-item d-flex">
-                      <div class="activite-label">4 weeks</div>
-                      <i class="bi bi-circle-fill activity-badge text-muted align-self-start"></i>
-                      <div class="activity-content">
-                        Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                      </div>
-                    </div><!-- End activity item-->
-
-                  </div>
+                        </tr>
+                        <%})%>
+                    </tbody>
+                  </table>
+                  <!-- End Table with stripped rows -->
 
                 </div>
               </div>

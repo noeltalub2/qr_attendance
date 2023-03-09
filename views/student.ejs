@@ -47,14 +47,15 @@
 
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Student Record<a href="/insert" class="btn btn-sm btn-success float-end">Insert New
+                <h5 class="card-title">Student Record<a href="/student_new"
+                    class="btn btn-sm btn-success float-end">Insert New
                     User</a></h5>
                 <div class="table-responsive-md">
                   <table id="studentTable" class="table" style="width:100%">
                     <thead>
                       <tr>
-                        <th>No.</th>
-                        <th>Student ID</th>
+
+                        <th>Student Number</th>
                         <th>Name</th>
                         <th>Degree</th>
                         <th>Year / Section</th>
@@ -66,12 +67,10 @@
 
                       <%student_record.forEach((student)=> {%>
                         <tr>
+
                           <th>
-                            <%=student.id%>
-                          </th>
-                          <td>
                             <%=student.student_id%>
-                          </td>
+                          </th>
                           <td>
                             <%=student.name%>
                           </td>
@@ -91,8 +90,11 @@
                                 <ul class="dropdown-menu">
                                   <li><a class="dropdown-item" href="/student/view/<%=student.student_id%>"><i
                                         class="bi bi-eye"></i>View</a></li>
-                                  <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square"></i>Edit</a></li>
-                                  <li><button class="dropdown-item text-danger" onclick="confirm('<%=student.student_id%>')"><i class="bi bi-trash"></i>Delete</i></button></li>
+                                  <li><a class="dropdown-item" href="/student/edit/<%=student.student_id%>"><i
+                                        class="bi bi-pencil-square"></i>Edit</a></li>
+                                  <li><button class="dropdown-item text-danger"
+                                      onclick="confirm('<%=student.student_id%>')"><i
+                                        class="bi bi-trash"></i>Delete</i></button></li>
                                 </ul>
                               </div>
                             </div>
@@ -120,13 +122,16 @@
 
 
         <script>
-          const Toast = Swal.mixin({
-            width: 450,
-            toast: true,
-            position: 'top',
-            showConfirmButton: false,
-            timer: 5000,
-          })
+
+          if ('<%-success_msg%>' != '') {
+
+            Toast.fire({
+              icon: 'success',
+              title: "<%=success_msg%>"
+            })
+
+          }
+
 
           $(document).ready(function () {
             $('#studentTable').DataTable({});
@@ -156,9 +161,9 @@
                         icon: 'success',
                         title: "Successfully Deleted"
                       })
-                      setTimeout(function() {
+                      setTimeout(function () {
                         window.location = "/student";
-                      },1000)
+                      }, 1000)
                     }
                   })
               }

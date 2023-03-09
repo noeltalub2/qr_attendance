@@ -51,10 +51,13 @@
                     <thead>
                       <tr>
                         <th>No.</th>
-                        <th>Student ID</th>
+                        <th>Code</th>
+                        <th>Student Number</th>
 
-                        <th>Time in (AM)</th>
-                        <th>Time out (AM)</th>
+                        <th>Time In (AM)</th>
+                        <th>Time Out (AM)</th>
+                        <th>Time In (PM)</th>
+                        <th>Time Out (PM)</th>
 
                         <th>Log Date</th>
 
@@ -64,16 +67,25 @@
                       <%attendance_record.forEach((attendance)=> {%>
                         <tr>
                           <th>
-                            <%=attendance.id%>
+                            <%=attendance.attendance_id%>
                           </th>
+                          <td>
+                            <%=attendance.event_code%>
+                          </td>
                           <td>
                             <%=attendance.student_id%>
                           </td>
                           <td>
-                            <%=attendance.time_in%>
+                            <%=attendance.time_in_am%>
                           </td>
                           <td>
-                            <%=attendance.time_out%>
+                            <%=attendance.time_out_am%>
+                          </td>
+                          <td>
+                            <%=attendance.time_in_pm%>
+                          </td>
+                          <td>
+                            <%=attendance.time_out_pm%>
                           </td>
                           <td>
                             <%=attendance.log_date%>
@@ -99,104 +111,9 @@
 
 
         <script>
-         
+
           $(document).ready(function () {
             $('#attendanceTable').DataTable({
-              dom: 'Bfrtip',
-              buttons: [
-                {
-                  extend: 'pdfHtml5',
-                  message: `Event: ${"Foundation"}\nDate: ${date()}`,
-                  title: `Attendance`,
-
-                  pageSize: "A4",
-                  text: 'Export to PDF',
-
-                  className: "btn btn-danger btn-sm px-3",
-                  customize: function (doc) {
-
-                    //Remove the title created by datatTables
-                    doc.content.splice(0, 1);
-                    //Create a date string that we use in the footer. Format is dd-mm-yyyy
-
-                    
-                    // A documentation reference can be found at
-                    // https://github.com/bpampuch/pdfmake#getting-started
-                    // Set page margins [left,top,right,bottom] or [horizontal,vertical]
-                    // or one number for equal spread
-                    // It's important to create enough space at the top for a header !!!
-                    doc.pageMargins = [35, 95, 35, 90];
-
-                    // Set the font size fot the entire document
-                    doc.defaultStyle.fontSize = 11;
-
-                    // Create a header object with 3 columns
-                    // Left side: Logo
-                    // Middle: brandname
-                    // Right side: A document title
-
-
-                    doc['header'] = (function () {
-                      return {
-                        columns: [
-
-                          {
-                            image: logo_2,
-                            width: 565,
-                            height: 75
-                          },
-                        ],
-                        margin: 10
-
-                      }
-                    });
-                    // Create a footer object with 2 columns
-                    // Left side: report creation date
-                    // Right side: current page and total pages
-                    doc['footer'] = (function (page, pages) {
-                      return {
-                        columns: [
-
-                          {
-                            image: logo,
-                            width: 565,
-                            height: 65,
-                          }
-                        ],
-                        margin: 10
-                      }
-                    });
-
-                    var objLayout = {};
-                    // Set the fontsize for the table header
-                    doc.styles.tableHeader.fillColor = "#fff";
-                    doc.styles.tableHeader.color = "#000";
-                    doc.styles.tableHeader.fontSize = 11;
-                    doc.content[1].table.widths = ['auto', '*', '*', '*', '*'];
-                    doc.styles.tableBodyOdd.fillColor = '#fff';
-                    doc.styles.tableBodyEven.fillColor = '#fff';
-                    doc.styles.tableBodyOdd.fillColor = '#fff';
-
-                    objLayout['hLineWidth'] = function (i) { return .5; };
-                    objLayout['vLineWidth'] = function (i) { return .5; };
-
-                    objLayout['paddingLeft'] = function (i) { return 10; };
-                    objLayout['paddingRight'] = function (i) { return 10; };
-
-                    objLayout['paddingTop'] = function (i) { return 3; };
-                    objLayout['paddingBottom'] = function (i) { return 3; };
-                    doc.content[1].layout = objLayout;
-
-
-                  }
-
-                },
-                {
-                  extend: 'excel',
-                  title: `Attendance Record`,
-                  text: 'Export to Excel', className: "btn btn-success btn-sm px-3",
-                }
-              ]
             });
           });
         </script>

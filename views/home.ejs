@@ -1,0 +1,279 @@
+<%-include ("./Include/Index/main_head.ejs")%>
+
+
+	<body>
+
+		<main id="main">
+
+			<div class="container-lg">
+
+
+				<div class="page-content pt-3">
+					<audio id="mySound" src="/audio/beep.mp3"></audio>
+					<div class="row gx-4 justify-content-center">
+
+						<div class="col-lg-4">
+
+							<div id="logo-container" class="mb-2">
+								<div class="p-2">
+									<div id="attendance_logo" class=" text-center">
+										<img src="/img/mmsu_logo.png" alt="Logo" height="55"
+											class="d-inline-block align-text-center">
+										<img src="/img/cte_logo.png" alt="Logo" height="55"
+											class="d-inline-block align-text-center">
+										<img src="/img/ict_logo.png" alt="Logo" height="55"
+											class="d-inline-block align-text-center">
+										<img src="/img/sc_logo.png" alt="Logo" height="55"
+											class="d-inline-block align-text-center">
+										<h6 class="mt-2">CTE ATTENDANCE RECORDING SYSTEM</h6>
+									</div>
+								</div>
+							</div>
+							<div id="qrcode-container" class="mb-2">
+								<div class="text-center">
+									<div id="reader"></div>
+
+									<div class="text-center fw-bold fs-5 mt-1" id="attendance_data">
+
+										<p class="mb-0" id="student_id"></p>
+										<p class="mb-0" id="student_name"></p>
+										<p class="mb-0" id="timestamp"></p>
+
+										<p class="text-bg-success d-inline-block px-1" id="activity"></p>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+						<div class="col-lg-6">
+							<div class="card mb-4">
+								<div class="card-body">
+
+									<div class="text-center">
+										<div id="date"></div>
+										<div id="time" class="fs-1"></div>
+									</div>
+								</div>
+							</div>
+
+							<div id="event-container" class="mb-2">
+								<%if (todayEvent.count) {%>
+									<p class="fw-bold mb-0">EVENT NAME: <%=todayEvent.event_name%> (
+											<%=todayEvent.event_code%>)</p>
+									<%} else {%>
+										<p class="fw-bold mb-0">NO EVENT FOR TODAY</p>
+										<%}%>
+
+
+							</div>
+
+							<div id="instruction-container" class="mb-3 p-3">
+
+								<p class="fw-bold mb-1">How to use:</p>
+								<ol>
+									<li class="instruction">
+										Make sure that the user must have generated QR Code already.
+										<div>
+											<small class="text-success">(Format example: 19-070228,Noel
+												Michael T. Talub,BSIT-COET,4-B)</small>
+										</div>
+
+									</li>
+
+									<li class="instruction">Scan your QR Code</li>
+								</ol>
+								<p class="fw-bold">
+									Press F5 to refresh the system if it does not work and make sure the
+									camera permission is allowed.
+								</p>
+
+							</div>
+
+
+
+							<div class="radio-tile-group">
+								<%if (todayEvent.attendance_type==='WholeDay' ) {%>
+									<div class="input-container">
+										<input id="time_in_am" class="radio-button" type="radio" name="attendance"
+											value="1" />
+										<div class="radio-tile">
+
+											<label for="time_in_am" class="radio-tile-label">Time IN (AM)</label>
+										</div>
+									</div>
+
+									<div class="input-container">
+										<input id="time_out_am" class="radio-button" type="radio" name="attendance"
+											value="2" />
+										<div class="radio-tile">
+
+											<label for="time_out_am" class="radio-tile-label">Time OUT (AM)</label>
+										</div>
+									</div>
+
+									<div class="input-container">
+										<input id="time_in_pm" class="radio-button" type="radio" name="attendance"
+											value="3" />
+										<div class="radio-tile">
+
+											<label for="time_in_pm" class="radio-tile-label">Time IN (PM)</label>
+										</div>
+									</div>
+
+									<div class="input-container">
+										<input id="time_out_pm" class="radio-button" type="radio" name="attendance"
+											value="4" />
+										<div class="radio-tile">
+
+											<label for="time_out_pm" class="radio-tile-label">Time OUT (PM)</label>
+										</div>
+									</div>
+									<%} else if (todayEvent.attendance_type==='MorningOnly' ) {%>
+										<div class="input-container">
+											<input id="time_in_am" class="radio-button" type="radio" name="attendance"
+												value="1" />
+											<div class="radio-tile">
+
+												<label for="time_in_am" class="radio-tile-label">Time IN (AM)</label>
+											</div>
+										</div>
+
+										<div class="input-container">
+											<input id="time_out_am" class="radio-button" type="radio" name="attendance"
+												value="2" />
+											<div class="radio-tile">
+
+												<label for="time_out_am" class="radio-tile-label">Time OUT (AM)</label>
+											</div>
+										</div>
+										<%} else if (todayEvent.attendance_type==='AfternoonOnly' ) {%>
+
+											<div class="input-container">
+												<input id="time_in_pm" class="radio-button" type="radio"
+													name="attendance" value="1" />
+												<div class="radio-tile">
+
+													<label for="time_in_pm" class="radio-tile-label">Time IN
+														(PM)</label>
+												</div>
+											</div>
+
+											<div class="input-container">
+												<input id="time_out_pm" class="radio-button" type="radio"
+													name="attendance" value="2" />
+												<div class="radio-tile">
+
+													<label for="time_out_pm" class="radio-tile-label">Time OUT
+														(PM)</label>
+												</div>
+											</div>
+											<%}%>
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</main>
+
+
+	</body>
+
+	<%-include ("./Include/Index/main_footer.ejs")%>
+		<%-include ("./Include/Index/main_end.ejs")%>
+
+			<script type="text/javascript">
+				var event_code = '<%-todayEvent.event_code%>'
+				var attendance_type_post = '<%-todayEvent.attendance_type%>'
+
+
+				var attendance_type = "";
+				var radios = document.querySelectorAll('input[type=radio][name="attendance"]');
+				radios.forEach(radio => radio.addEventListener('change', () => attendance_type = radio.value));
+
+				const Toast = Swal.mixin({
+					showClass: {
+						// disable popup animation
+						icon: ''                       // disable icon animation
+					},
+					toast: true,
+					position: 'top',
+					showConfirmButton: false,
+					timer: 3000,
+				})
+
+				// QR Code settings
+				let qrboxFunction = function (viewfinderWidth, viewfinderHeight) {
+					let minEdgePercentage = .9; // 80%
+					let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+					let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+					return {
+						width: qrboxSize,
+						height: qrboxSize,
+					};
+				};
+				let config = {
+					qrbox: qrboxFunction,
+					fps: 15,
+					rememberLastUsedCamera: true,
+					aspectRatio: 1.0,
+					supportedScanTypes: [0],
+				};
+
+				var lastResult;
+
+				function scanSuccess(decodedText, decodedResult) {
+					if (decodedText !== lastResult) {
+						lastResult = decodedText;
+
+						fetch(`/qrcode/${attendance_type_post}`, {
+							method: "POST",
+							body: JSON.stringify({ data: lastResult, attendance_type, event_code }),
+							headers: { "Content-Type": "application/json" },
+						})
+							.then((res) => res.json())
+							.then((response) => {
+								console.log(response)
+
+
+								if (response.status === "error") {
+									Toast.fire({
+										icon: 'error',
+										title: response.msg
+									})
+
+								}
+
+								if (response.status === "success") {
+									document.getElementById('mySound').play();
+									Toast.fire({
+										icon: 'success',
+										title: "SUCCESS"
+
+									})
+
+									document.getElementById("student_id").innerHTML = response.student_id
+									document.getElementById("student_name").innerHTML = response.name
+									document.getElementById("timestamp").innerHTML = response.timestamp
+									document.getElementById("activity").innerHTML = response.activity
+
+
+								}
+
+								setTimeout(() => {
+									lastResult = ""
+								}, 3000)
+							});
+
+					}
+				}
+
+				let html5QrcodeScanner = new Html5QrcodeScanner("reader", config, false);
+
+				html5QrcodeScanner.render(scanSuccess);
+			</script>
