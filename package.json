@@ -29,6 +29,7 @@
     "moment": "^2.29.4",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.0.1",
+    "mysqldump": "^3.2.0",
     "node-ip": "^0.1.2",
     "nodemon": "^2.0.20",
     "qr-image": "^3.2.0",

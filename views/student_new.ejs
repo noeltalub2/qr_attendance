@@ -38,6 +38,16 @@
                             <span>Event Management</span>
                         </a>
                     </li><!-- End Blank Page Nav -->
+                    <li class="nav-heading">Others</li>
+
+
+                    <li class="nav-item">
+                      <a class="nav-link collapsed" href="/settings">
+          
+                        <i class="bi bi-gear"></i>
+                        <span>Settings</span>
+                      </a>
+                    </li><!-- End Blank Page Nav -->
                 </ul>
 
             </aside><!-- End Sidebar-->
@@ -60,14 +70,13 @@
                                     <div class="card-body">
                                         <div class="input-container">
                                             <h6 class="card-title">Manual Insert (Single Data)</h6>
-                                            <form action="/student_new" method="post" class="needs-validation"
-                                                id="form-single" novalidate>
+                                            <form action="/student_new" method="post" class="needs-validation" id="form-single" novalidate>
                                                 <div class="mb-2">
                                                     <label for="student_id" class="form-label">Student
                                                         ID</label>
                                                     <input class="form-control form-control-sm" type="text"
                                                         name="student_id" id="student_id" autofocus required
-                                                        onkeyup="getStudent()"></input>
+                                                        ></input>
                                                     <div class="invalid-feedback" id="invalid-feedback">
 
                                                     </div>
@@ -98,7 +107,7 @@
 
 
                                                 <input class="btn btn-success btn-sm mb-2" id="register" type="submit"
-                                                    value="Register"></input>
+                                                    value="Register" ></input>
 
                                             </form>
                                         </div>
@@ -118,7 +127,7 @@
 
                                             <div class="excel-form mt-3">
                                                 <form action="/upload_excel" enctype="multipart/form-data" method="post"
-                                                    class="needs-validation-excel" novalidate>
+                                                    class="needs-validation" novalidate>
 
                                                     <input type="file" name="import-excel"
                                                         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -139,75 +148,7 @@
                 </section>
             </div>
             <%-include ("./Include/Admin/script.ejs")%>
-                <script>
-
-                    // Example starter JavaScript for disabling form submissions if there are invalid fields
-                    (() => {
-                        'use strict'
-
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        const forms_input = document.querySelectorAll('.needs-validation')
-                        const forms_excel = document.querySelectorAll('.needs-validation-excel')
-
-                        // Loop over them and prevent submission
-                        Array.from(forms_input).forEach(form => {
-                            form.addEventListener('submit', event => {
-                                if (!form.checkValidity()) {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-                                }
-
-                                form.classList.add('was-validated')
-                            }, false)
-                        })
-
-                        Array.from(forms_excel).forEach(form => {
-                            form.addEventListener('submit', event => {
-                                if (!form.checkValidity()) {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-                                }
-
-                                form.classList.add('was-validated')
-                            }, false)
-                        })
-                    })()
-
-                    function getStudent() {
-                        var student_id = document.getElementById("student_id").value
-                        fetch('/student_exist', {
-                            method: "POST",
-                            body: JSON.stringify({ student_id }),
-                            headers: { "Content-Type": "application/json" },
-                        })
-                            .then((res) => res.json())
-                            .then((response) => {
-                                console.log(response)
-                                if (response.status === 'success') {
-                                    document.getElementById('form-single').addEventListener('submit', event => {
-                                        event.preventDefault()
-                                        event.stopPropagation()
-                                    }, false)
-                                    document.getElementById("invalid-feedback").style.display = 'block'
-                                    document.getElementById("invalid-feedback").innerHTML = `${student_id} is already Registered`
-                                }
-
-
-                                if (response.status === "error") {
-                                   
-                                    document.getElementById("invalid-feedback").style.display = 'none'
-                                    document.getElementById("invalid-feedback").innerHTML = ''
-                                }
-
-
-                            }
-
-
-
-                            );
-
-                    }
-                </script>
+               
     </body>
 
     </html>

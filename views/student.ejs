@@ -38,6 +38,16 @@
               <span>Event Management</span>
             </a>
           </li><!-- End Blank Page Nav -->
+          <li class="nav-heading">Others</li>
+
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/settings">
+
+              <i class="bi bi-gear"></i>
+              <span>Settings</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
         </ul>
 
       </aside><!-- End Sidebar-->
@@ -90,6 +100,7 @@
 
 
         <script>
+          
 
           if ('<%-success_msg%>' != '') {
 
@@ -102,11 +113,8 @@
 
 
           var table = $("#studentTable").DataTable({
-
             processing: true,
-            
-        
-
+          
             ajax: {
               url: "/student_data",
               type: "POST",
@@ -119,7 +127,7 @@
               { 'data': 'year_section' },
               {
                 'data': null, 'render': function (data) {
-                  return '<div class="text-center"> <div class="dropdown"> <a class="text-secondary" href="#" data-bs-toggle="dropdown" aria-expanded="false"> <i class="bi bi-three-dots-vertical"></i> </a> <ul class="dropdown-menu"> <li><a class="dropdown-item" href="/student/view/'+data.student_id+'"><i class="bi bi-eye"></i>View</a></li> <li><a class="dropdown-item" href="/student/edit/'+data.student_id+'"><i class="bi bi-pencil-square"></i>Edit</a></li> <li><button class="dropdown-item text-danger" onclick="confirm('+data.student_id+')"><i class="bi bi-trash"></i>Delete</i></button></li> </ul> </div>'
+                  return `<div class="text-center"> <div class="dropdown"> <a class="text-secondary" href="#" data-bs-toggle="dropdown" aria-expanded="false"> <i class="bi bi-three-dots-vertical"></i> </a> <ul class="dropdown-menu"> <li><a class="dropdown-item" href="/student/view/${data.student_id}"><i class="bi bi-eye"></i>View</a></li> <li><a class="dropdown-item" href="/student/edit/${data.student_id}"><i class="bi bi-pencil-square"></i>Edit</a></li> <li><button class="dropdown-item text-danger" onclick="confirm('${data.student_id}')"><i class="bi bi-trash"></i>Delete</i></button></li> </ul> </div>`
                 }
               },
 

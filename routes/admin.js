@@ -6,21 +6,23 @@ const excelDownload = require("../middleware/excelDownload");
 const excelUpload = require("../middleware/excelUpload");
 const { forwardAuth, requireAuth } = require("../middleware/adminAuth");
 
-router.get("/login", forwardAuth, adminController.getLogin)
-router.post("/login", forwardAuth, adminController.postLogin)
+
+
+router.get("/login", forwardAuth, adminController.getLogin);
+router.post("/login", forwardAuth, adminController.postLogin);
 router.get("/dashboard", requireAuth, adminController.getDashboard);
 
 router.get("/student", requireAuth, adminController.getStudent);
 router.post("/student_data", requireAuth, adminController.postAllStudent);
 router.get(
-	"/student/edit/:student_id",	
+	"/student/edit/:student_id",
 	requireAuth,
 	adminController.getStudentEdit
 );
 router.post("/student/edit", requireAuth, adminController.postStudentEdit);
 router.get("/student_new", requireAuth, adminController.getStudentNew);
 router.post("/student_new", requireAuth, adminController.postStudentUpload);
-router.post("/student_exist", requireAuth, adminController.postStudentExist);
+
 router.get(
 	"/student/view/:student_id",
 	requireAuth,
@@ -62,9 +64,11 @@ router.get(
 	excelDownload
 );
 
-router.get("/settings", requireAuth, adminController.getSettings)
-router.post("/change_password", requireAuth, adminController.changePassword)
-router.post("/delete_database", requireAuth, adminController.delDatabase)
-router.get("/logout", requireAuth, adminController.getLogout)
+router.get("/backup_sql", requireAuth, adminController.backupSql);
+
+router.get("/settings", requireAuth, adminController.getSettings);
+router.post("/change_password", requireAuth, adminController.changePassword);
+router.post("/delete_database", requireAuth, adminController.delDatabase);
+router.get("/logout", requireAuth, adminController.getLogout);
 
 module.exports = router;

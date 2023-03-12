@@ -38,6 +38,16 @@
                             <span>Event Management</span>
                         </a>
                     </li><!-- End Blank Page Nav -->
+                    <li class="nav-heading">Others</li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" href="/settings">
+
+                            <i class="bi bi-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li><!-- End Blank Page Nav -->
                 </ul>
 
             </aside><!-- End Sidebar-->
@@ -45,76 +55,74 @@
                 <div class="pagetitle">
                     <h1>Edit Student</h1>
                     <nav>
-                      <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/student">Student Management</a></li>
-                        <li class="breadcrumb-item active">Edit Student</li>
-                      </ol>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/student">Student Management</a></li>
+                            <li class="breadcrumb-item active">Edit Student</li>
+                        </ol>
                     </nav>
-                  </div>
+                </div>
                 <section class="section student">
-                    
                     <div class="row">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Edit Student</h5>
-                                <%-include ("./Include/Admin/message.ejs")%>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="input-container">
-                                                
-                                                <form action="/student/edit" method="post" class="needs-validation"
-                                                    novalidate>
-                                                    <div class="mb-3 row">
-                                                        <label for="student_id" class="col-sm-3 col-form-label">Student
-                                                            ID:</label>
-                                                        <div class="col-sm-9">
-                                                            <input class="form-control-plaintext fw-bold" type="text"
-                                                            name="student_id" id="student_id" readonly value="<%=student_record.student_id%>"
-                                                            minlength="9" maxlength="9"></input>
-                                                                </div>
-                                                        </div>
-                                                      </div>
-                                               
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Edit Student</h5>
+                                    <%-include ("./Include/Admin/message.ejs")%>
 
-                                                    <div class="mb-2">
-                                                        <label for="name" class="form-label">Student
-                                                            Name</label>
-                                                        <input class="form-control" type="text"
-                                                            name="name" id="name" value="<%=student_record.name%>" autofocus  required></input>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label for="section" class="form-label">Degree</label>
+                                        <div class="input-container">
 
-                                                        <input class="form-control" type="text"
-                                                            name="degree" id="degree" value="<%=student_record.degree%>" required></input>
+                                            <form action="/student/edit" method="post" class="needs-validation"
+                                                novalidate>
+                                                <div class="mb-3 row">
+                                                    <label for="student_id" class="col-sm-3 col-form-label">Student
+                                                        ID:</label>
+                                                    <div class="col-sm-9">
+                                                        <input class="form-control-plaintext fw-bold" type="text"
+                                                            name="student_id" id="student_id" readonly
+                                                            value="<%=student_record.student_id%>" minlength="9"
+                                                            maxlength="9"></input>
+
 
                                                     </div>
-                                                    <div class="mb-2">
-                                                        <label for="course" class="form-label">Year &
-                                                            Section</label>
-                                                        <input class="form-control" type="text"
-                                                            name="year_section" id=" year_section" value="<%=student_record.year_section%>" required
-                                                            minlength="3" maxlength="3"></input>
-                                                    </div>
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label for="name" class="form-label">Student
+                                                        Name</label>
+                                                    <input class="form-control" type="text" name="name" id="name"
+                                                        value="<%=student_record.name%>" autofocus required></input>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="section" class="form-label">Degree</label>
+
+                                                    <input class="form-control" type="text" name="degree" id="degree"
+                                                        value="<%=student_record.degree%>" required></input>
+
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="course" class="form-label">Year &
+                                                        Section</label>
+                                                    <input class="form-control" type="text" name="year_section"
+                                                        id=" year_section" value="<%=student_record.year_section%>"
+                                                        required minlength="3" maxlength="3"></input>
+                                                </div>
 
 
+                                                <input class="btn btn-success btn-sm" id="update" type="submit"
+                                                    value="Update"></input>
 
-                                                    <input class="btn btn-success btn-sm" id="update" type="submit"
-                                                        value="Update"></input>
-
-                                                </form>
-                                            </div>
+                                            </form>
                                         </div>
-                                     
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </section>
             </div>
             <%-include ("./Include/Admin/script.ejs")%>
-               
+
     </body>
 
     </html>

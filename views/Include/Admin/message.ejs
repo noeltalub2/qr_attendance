@@ -1,6 +1,7 @@
 <% if(typeof errors !='undefined' ){ %>
     <% errors.forEach(function(error) { %>
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-octagon me-1"></i>
             <%= error.msg %>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -8,18 +9,22 @@
             <% } %>
                 <% if(success_msg !='' ){ %>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle me-1"></i>
                         <%= success_msg %>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     <% } %>
                         <% if(error_msg !='' ){ %>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-octagon me-1"></i>
                                 <%= error_msg %>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                             <% } %>
                                 <% if(error !='' ){ %>
+                                  
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <i class="bi bi-exclamation-octagon me-1"></i>
                                         <%= error %>
                                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                     </div>

@@ -38,6 +38,16 @@
               <span>Event Management</span>
             </a>
           </li><!-- End Blank Page Nav -->
+          <li class="nav-heading">Others</li>
+
+
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/settings">
+
+              <i class="bi bi-gear"></i>
+              <span>Settings</span>
+            </a>
+          </li><!-- End Blank Page Nav -->
         </ul>
 
       </aside><!-- End Sidebar-->
@@ -48,163 +58,149 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
               <li class="breadcrumb-item"><a href="/event">Event Management</a></li>
-       
+
               <li class="breadcrumb-item active">Add Event</li>
             </ol>
           </nav>
         </div>
         <section class="section student">
-       
+
           <div class="row">
-            <div class="card">
-              <div class="card-body">
-                <form method="post" class="needs-validation" id="form" novalidate>
-                  <h5 class="card-title">Insert New Event</h5>
-                  <div class="col-md-6">
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <form method="post" class="needs-validation" id="form" novalidate>
+                    <h5 class="card-title">Insert New Event</h5>
+
                     <%-include ("./Include/Admin/message.ejs")%>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="row">
-                      <div class="col">
-                        <div class="mb-2">
-                          <label for="event_code" class="form-label fw-bold">Event Code</label>
-                          <input type="text" class="form-control" id="event_code" name="event_code"
-                            oninput="this.value = this.value.toUpperCase()" required autofocus>
-                          <div class="invalid-feedback">
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="mb-2">
-                          <label for="event_date" class="form-label fw-bold">Event Date</label>
-                          <input type="date" class="form-control" id="event_date" name="event_date" required>
-                          <div class="invalid-feedback">
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-2">
-                      <label for="event_name" class="form-label fw-bold">Event Name</label>
-                      <input type="text" class="form-control" id="event_name" name="event_name"
-                        oninput="this.value = this.value.toUpperCase()" required>
-                      <div class="invalid-feedback">
-
-                      </div>
-                    </div>
-
-
-                  </div>
-
-                  <div class="col-md-6 mb-2">
-
-                    <label for="attendance_type" class="form-label fw-bold">Attendance Type</label>
-                    <select onchange="getval(this)" class="form-select" name="attendance_type" required>
-
-                      <option value="WholeDay" selected>Whole Day</option>
-                      <option value="MorningOnly">Morning Only</option>
-                      <option value="AfternoonOnly">Afternoon Only</option>
-                    </select>
-
-                  </div>
-                  <div class="col-md-6 mb-3">
-
-                    <div id="morning_only" class="mb-2">
-
                       <div class="row">
-                        <div class="col-md-6">
-                          <label for="time_in_am_start" class="form-label fw-bold">Time In Start (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="08:00" class="form-control"
-                            id="time_in_am_start" name="time_in_am_start" required>
+                        <div class="col">
+                          <div class="mb-2">
+                            <label for="event_code" class="form-label fw-bold">Event Code</label>
+                            <input type="text" class="form-control" id="event_code" name="event_code"
+                              oninput="this.value = this.value.toUpperCase()" required autofocus>
+                            <div class="invalid-feedback">
 
-                          <div class="invalid-feedback">
-
+                            </div>
                           </div>
                         </div>
+                        <div class="col">
+                          <div class="mb-2">
+                            <label for="event_date" class="form-label fw-bold">Event Date</label>
+                            <input type="date" class="form-control" id="event_date" name="event_date" required>
+                            <div class="invalid-feedback">
 
-                        <div class="col-md-6">
-                          <label for="time_in_am_end" class="form-label fw-bold">Time In End (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="08:30" class="form-control"
-                            id="time_in_am_end" name="time_in_am_end" required>
-
-                          <div class="invalid-feedback">
-
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="time_out_am_start" class="form-label fw-bold">Time Out Start (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="11:00" class="form-control"
-                            id="time_out_am_start" name="time_out_am_start" required>
-
-                          <div class="invalid-feedback">
-
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="time_out_am_end" class="form-label fw-bold">Time Out End (AM)</label>
-                          <input type="time" min="00:00" max="11:59" value="11:30" class="form-control"
-                            id="time_out_am_end" name="time_out_am_end" required>
-
-                          <div class="invalid-feedback">
-
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div id="afternoon_only" class="mb-2">
+                      <div class="mb-2">
+                        <label for="event_name" class="form-label fw-bold">Event Name</label>
+                        <input type="text" class="form-control" id="event_name" name="event_name"
+                          oninput="this.value = this.value.toUpperCase()" required>
+                        <div class="invalid-feedback">
 
-                      <div class="row">
-                        <div class="col-md-6">
-                          <label for="time_in_pm_start" class="form-label fw-bold">Time In Start (PM)</label>
-                          <input type="time" min="12:00" max="24:00" value="13:00" class="form-control"
-                            id="time_in_pm_start" name="time_in_pm_start" required>
-
-                          <div class="invalid-feedback">
-
-                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <label for="time_in_pm_end" class="form-label fw-bold">Time In End (PM)</label>
-                          <input type="time" min="12:00" max="24:00" value="13:30" class="form-control"
-                            id="time_in_pm_end" name="time_in_pm_end" required>
+                      </div>
+                      <div class="mb-2">
 
-                          <div class="invalid-feedback">
+                        <label for="attendance_type" class="form-label fw-bold">Attendance Type</label>
+                        <select onchange="getval(this)" class="form-select" name="attendance_type" required>
 
+                          <option value="WholeDay" selected>Whole Day</option>
+                          <option value="MorningOnly">Morning Only</option>
+                          <option value="AfternoonOnly">Afternoon Only</option>
+                        </select>
+                      </div>
+                      <div id="morning_only" class="mb-2">
+
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="time_in_am_start" class="form-label fw-bold">Time In Start (AM)</label>
+                            <input type="time" min="00:00" max="11:59" value="08:00" class="form-control"
+                              id="time_in_am_start" name="time_in_am_start" required>
+
+                            <div class="invalid-feedback">
+
+                            </div>
                           </div>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="time_out_pm_start" class="form-label fw-bold">Time Out Start (PM)</label>
-                          <input type="time" min="12:00" max="24:00" value="16:30" class="form-control"
-                            id="time_out_pm_start" name="time_out_pm_start" required>
 
-                          <div class="invalid-feedback">
+                          <div class="col-md-6">
+                            <label for="time_in_am_end" class="form-label fw-bold">Time In End (AM)</label>
+                            <input type="time" min="00:00" max="11:59" value="08:30" class="form-control"
+                              id="time_in_am_end" name="time_in_am_end" required>
 
+                            <div class="invalid-feedback">
+
+                            </div>
                           </div>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="time_out_pm_end" class="form-label fw-bold">Time Out End (AM)</label>
-                          <input type="time" min="12:00" max="24:00" value="17:00" class="form-control"
-                            id="time_out_pm_end" name="time_out_pm_end" required>
+                          <div class="col-md-6">
+                            <label for="time_out_am_start" class="form-label fw-bold">Time Out Start (AM)</label>
+                            <input type="time" min="00:00" max="11:59" value="11:00" class="form-control"
+                              id="time_out_am_start" name="time_out_am_start" required>
 
-                          <div class="invalid-feedback">
+                            <div class="invalid-feedback">
 
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="time_out_am_end" class="form-label fw-bold">Time Out End (AM)</label>
+                            <input type="time" min="00:00" max="11:59" value="11:30" class="form-control"
+                              id="time_out_am_end" name="time_out_am_end" required>
+
+                            <div class="invalid-feedback">
+
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                      <div id="afternoon_only" class="mb-2">
 
-                  </div>
-                  <div class="col-md-12">
-                    <input type="submit" class="btn btn-success" value="Add Event">
-                  </div>
-                </form>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="time_in_pm_start" class="form-label fw-bold">Time In Start (PM)</label>
+                            <input type="time" min="12:00" max="24:00" value="13:00" class="form-control"
+                              id="time_in_pm_start" name="time_in_pm_start" required>
+
+                            <div class="invalid-feedback">
+
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="time_in_pm_end" class="form-label fw-bold">Time In End (PM)</label>
+                            <input type="time" min="12:00" max="24:00" value="13:30" class="form-control"
+                              id="time_in_pm_end" name="time_in_pm_end" required>
+
+                            <div class="invalid-feedback">
+
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="time_out_pm_start" class="form-label fw-bold">Time Out Start (PM)</label>
+                            <input type="time" min="12:00" max="24:00" value="16:30" class="form-control"
+                              id="time_out_pm_start" name="time_out_pm_start" required>
+
+                            <div class="invalid-feedback">
+
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label for="time_out_pm_end" class="form-label fw-bold">Time Out End (AM)</label>
+                            <input type="time" min="12:00" max="24:00" value="17:00" class="form-control"
+                              id="time_out_pm_end" name="time_out_pm_end" required>
+
+                            <div class="invalid-feedback">
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <input type="submit" class="btn btn-success" value="Add Event">
+                      </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
@@ -215,7 +211,81 @@
 
       <%-include ("./Include/Admin/script.ejs")%>
 
+        <script>
+          const Toast = Swal.mixin({
+            showClass: {
+              // disable popup animation
+              icon: ''                       // disable icon animation
+            },
 
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 5000,
+          })
+          
+          var today = new Date().toISOString().split("T")[0];
+          document.getElementsByName("event_date")[0].setAttribute("min", today);
+
+
+
+          document.querySelector("form").addEventListener("submit", (event) => {
+            var time_in_am_start = document.getElementById("time_in_am_start").value;
+            var time_in_am_end = document.getElementById("time_in_am_end").value;
+
+            var time_out_am_start = document.getElementById("time_out_am_start").value;
+            var time_out_am_end = document.getElementById("time_out_am_end").value;
+
+            var time_in_pm_start = document.getElementById("time_in_pm_start").value;
+            var time_in_pm_end = document.getElementById("time_in_pm_end").value;
+
+            var time_out_pm_start = document.getElementById("time_out_pm_start").value;
+            var time_out_pm_end = document.getElementById("time_out_pm_end").value;
+
+            if (time_in_am_start > time_in_am_end) {
+              Toast.fire({
+                icon: "error",
+                title: "Time In Start (AM) must not be greater than Time In End (AM)",
+              });
+
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            if (time_out_am_start > time_out_am_end) {
+              Toast.fire({
+                icon: "error",
+                title: "Time Out Start (AM) must not be greater than Time Out End (AM)",
+              });
+
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            if (time_in_pm_start > time_in_pm_end) {
+              Toast.fire({
+                icon: "error",
+                title: "Time In Start (PM) must not be greater than Time In End (PM)",
+              });
+
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            if (time_out_pm_start > time_out_pm_end) {
+              Toast.fire({
+                icon: "error",
+                title: "Time Out Start (PM) must not be greater than Time Out End (PM)",
+              });
+
+              event.preventDefault();
+              event.stopPropagation();
+            }
+
+            return false;
+          });
+
+        </script>
         <script>
 
           function getval(el) {

@@ -3,10 +3,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="/vendor/datatables/jquery.js"></script>
-
-<script src="/vendor/datatables/jquery_datatables.js"></script>
-<script src="/vendor/datatables/bootstrap5_datatables.js"></script>
-
+<!-- Date and Time -->
 <script type="text/javascript">
   const zeroFill = n => {
     return ('0' + n).slice(-2);
@@ -67,6 +64,96 @@
 
 
 </script>
+<!--QR Code Script-->
+<script type="text/javascript">
+  var event_code = '<%-todayEvent.event_code%>'
+  var attendance_type_post = '<%-todayEvent.attendance_type%>'
+
+
+  var attendance_type = "";
+  var radios = document.querySelectorAll('input[type=radio][name="attendance"]');
+  radios.forEach(radio => radio.addEventListener('change', () => attendance_type = radio.value));
+
+  const Toast = Swal.mixin({
+    showClass: {
+      // disable popup animation
+      icon: ''                       // disable icon animation
+    },
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000,
+  })
+
+  // QR Code settings
+  let qrboxFunction = function (viewfinderWidth, viewfinderHeight) {
+    let minEdgePercentage = .9; // 80%
+    let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+    let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+    return {
+      width: qrboxSize,
+      height: qrboxSize,
+    };
+  };
+  let config = {
+    qrbox: qrboxFunction,
+    fps: 15,
+    rememberLastUsedCamera: true,
+    aspectRatio: 1.0,
+    supportedScanTypes: [0],
+  };
+
+  var lastResult;
+
+  function scanSuccess(decodedText, decodedResult) {
+    if (decodedText !== lastResult) {
+      lastResult = decodedText;
+
+      fetch(`/qrcode/${attendance_type_post}`, {
+        method: "POST",
+        body: JSON.stringify({ data: lastResult, attendance_type, event_code }),
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => res.json())
+        .then((response) => {
+          console.log(response)
+
+
+          if (response.status === "error") {
+            Toast.fire({
+              icon: 'error',
+              title: response.msg
+            })
+
+          }
+
+          if (response.status === "success") {
+            document.getElementById('mySound').play();
+            Toast.fire({
+              icon: 'success',
+              title: "SUCCESS"
+
+            })
+
+            document.getElementById("student_id").innerHTML = response.student_id
+            document.getElementById("student_name").innerHTML = response.name
+            document.getElementById("timestamp").innerHTML = response.timestamp
+            document.getElementById("activity").innerHTML = response.activity
+
+
+          }
+        }).then(setTimeout(() => {
+          lastResult = ""
+        }, 3000))
+
+    }
+  }
+
+  let html5QrcodeScanner = new Html5QrcodeScanner("reader", config, false);
+
+  html5QrcodeScanner.render(scanSuccess);
+</script>
+
 </body>
 
 </html>

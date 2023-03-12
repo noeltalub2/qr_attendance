@@ -2,7 +2,9 @@ const bcrypt = require("bcrypt");
 const { createTokensAdmin } = require("../utils/token");
 const { time, date, convertTime } = require("../utils/timestamp");
 const readXlsxFile = require("read-excel-file/node");
+
 const fs = require("fs");
+const mysqldump = require("mysqldump");
 
 const db = require("../database/db");
 
@@ -27,41 +29,32 @@ const getLogin = (req, res) => {
 };
 
 const postLogin = (req, res) => {
-	try {
-		const { username, password } = req.body;
-		const findUser = "SELECT * from admin WHERE username = ?";
-		db.query(findUser, [username], async (err, result) => {
-			if (err) {
-				req.flash("error_msg", "Authentication failed.");
-				res.redirect("/login");
-			} else {
-				if (result.length > 0) {
-					const match_password = await bcrypt.compare(
-						password,
-						result[0].password
-					);
-					if (match_password) {
-						const generateToken = createTokensAdmin(
-							result[0].username
-						);
-						res.cookie("token", generateToken, { httpOnly: true });
-						res.redirect("/dashboard");
-					} else {
-						req.flash(
-							"error_msg",
-							"Incorrect username or password"
-						);
-						res.redirect("/login");
-					}
+	const { username, password } = req.body;
+	const findUser = "SELECT * from admin WHERE username = ?";
+	db.query(findUser, [username], async (err, result) => {
+		if (err) {
+			req.flash("error_msg", "Authentication failed.");
+			res.redirect("/login");
+		} else {
+			if (result.length > 0) {
+				const match_password = await bcrypt.compare(
+					password,
+					result[0].password
+				);
+				if (match_password) {
+					const generateToken = createTokensAdmin(result[0].username);
+					res.cookie("token", generateToken, { httpOnly: true });
+					res.redirect("/dashboard");
 				} else {
-					req.flash("error_msg", "Could'nt find your account");
+					req.flash("error_msg", "Incorrect username or password");
 					res.redirect("/login");
 				}
+			} else {
+				req.flash("error_msg", "Could'nt find your account");
+				res.redirect("/login");
 			}
-		});
-	} catch {
-		throw err;
-	}
+		}
+	});
 };
 
 const getDashboard = async (req, res) => {
@@ -140,15 +133,21 @@ const postStudentEdit = async (req, res) => {
 	};
 	var sql = "UPDATE student SET ? WHERE student_id = ?";
 	//Add account to database
-	db.query(sql, [data, student_id], (err, rset) => {
-		if (err) {
-			req.flash("error_msg", "Error updating event");
-			res.redirect("/student");
-		} else {
-			req.flash("success_msg", "Successfully edited student");
-			res.redirect("/student");
-		}
-	});
+	try {
+		db.query(sql, [data, student_id], (err, rset) => {
+			if (err) {
+				req.flash("error_msg", "Error updating event");
+				res.redirect("/student");
+			} else {
+				req.flash("success_msg", "Successfully edited student");
+				res.redirect("/student");
+			}
+		});
+	} catch (err) {
+		console.log("Error: " + err);
+		req.flash("error_msg", "Error occur");
+		res.redirect("/student");
+	}
 };
 
 const getStudentView = async (req, res) => {
@@ -175,7 +174,9 @@ const deleteStudent = async (req, res) => {
 		)[0];
 		res.status(200).json({ status: "success" });
 	} catch (err) {
-		throw err;
+		console.log("Error: " + err);
+		req.flash("error_msg", "Error occur");
+		res.redirect("/student");
 	}
 };
 
@@ -282,7 +283,9 @@ const postEventNew = async (req, res) => {
 			});
 		}
 	} catch (err) {
-		throw err;
+		console.log("Error: " + err);
+		req.flash("error_msg", "Error occur");
+		res.redirect("/event");
 	}
 };
 
@@ -323,7 +326,6 @@ const postEventEdit = async (req, res) => {
 	const {
 		event_code,
 		event_name,
-		event_date,
 		attendance_type,
 		time_in_am_start,
 		time_in_am_end,
@@ -389,21 +391,6 @@ const getStudentNew = async (req, res) => {
 	res.render("student_new");
 };
 
-const postStudentExist = async (req, res) => {
-	const student_id = req.body.student_id;
-	console.log(student_id)
-	const exist_student = (
-		await zeroParam(
-			`SELECT count(*) as 'count' FROM student WHERE student_id = '${student_id}'`
-		)
-	)[0].count;
-
-	if (exist_student) {
-		res.status(200).json({ status: "success" });
-	} else {
-		res.status(200).json({ status: "error" });
-	}
-};
 const postStudentUpload = async (req, res) => {
 	const { student_id, name, degree, year_section } = req.body;
 
@@ -476,7 +463,7 @@ const postExcelUpload = async (req, res) => {
 					if (err) {
 						console.log(err);
 					} else {
-						console.log("DELETED");
+						res.end()
 					}
 				});
 			});
@@ -509,18 +496,19 @@ const changePassword = async (req, res) => {
 			req.flash("success_msg", `Successfully changed password`);
 			res.redirect("/settings");
 		} else {
-			req.flash("error", `Invalid Password. Try Again`);
+			req.flash("error", `Invalid Old Password. Try Again`);
 			res.redirect("/settings");
 		}
-	} catch (e) {
-		console.log(e);
+	} catch (err) {
+		console.log("Error: " + err);
+		req.flash("error", `Error occur`);
+		res.redirect("/settings");
 	}
 };
 
 const delDatabase = (req, res) => {
+	const del_password = req.body.password;
 	try {
-		const del_password = req.body.password;
-
 		const findUser = `SELECT * from admin WHERE username = ?`;
 		db.query(findUser, [res.locals.sid], async (err, result) => {
 			if (err) {
@@ -533,21 +521,72 @@ const delDatabase = (req, res) => {
 						result[0].password
 					);
 					if (match_password) {
-						res.status(200).json({ status: "success" });
+						await zeroParam("TRUNCATE `student`");
+						await zeroParam("TRUNCATE `event_list`");
+						await zeroParam("TRUNCATE `attendance`");
+						req.flash(
+							"success_msg",
+							`Successfully deleted database`
+						);
+						res.redirect("/settings");
 					} else {
-						res.status(200).json({ status: "error" });
+						req.flash("error", `Invalid Password`);
+						res.redirect("/settings");
 					}
 				}
 			}
 		});
-	} catch (e) {
-		console.log(e);
+	} catch (err) {
+		console.log("Error: " + err);
+		req.flash("error", `Error occur`);
+		res.redirect("/settings");
+	}
+};
+
+const backupSql = async (req, res) => {
+	const file_name = `${date()} - backup.sql`;
+	const file_path = `./database/${file_name}`;
+	try {
+		await mysqldump({
+			connection: {
+				host: process.env.DB_HOST,
+				user: process.env.DB_USER,
+				password: process.env.DB_PASS,
+				database: process.env.DB_NAME,
+			},
+			dumpToFile: file_path, // Filename for the exported SQL file
+			// Add any additional mysqldump options here if needed
+		});
+
+		res.setHeader(
+			"Content-Disposition",
+			"attachment; filename=" + file_name
+		);
+		res.setHeader("Content-Type", "application/sql");
+
+		const filestream = fs.createReadStream(file_path);
+		filestream.pipe(res);
+
+		res.on("close", () => {
+			fs.unlink(file_path, (err) => {
+				if (err) {
+					console.error(err);
+				} else {
+					res.end();
+				}
+			});
+		});
+	} catch (err) {
+		console.error("Error: " + err);
+		req.flash("error", `Error occur`);
+		res.redirect("/settings");
 	}
 };
 const getLogout = (req, res) => {
 	res.clearCookie("token");
 	res.redirect("/login");
 };
+
 module.exports = {
 	getLogin,
 	postLogin,
@@ -569,10 +608,10 @@ module.exports = {
 	postEventEdit,
 	deleteEvent,
 	postStudentUpload,
-	postStudentExist,
 	postExcelUpload,
 	getSettings,
 	changePassword,
 	delDatabase,
+	backupSql,
 	getLogout,
 };
