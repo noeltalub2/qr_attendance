@@ -42,14 +42,18 @@
 
             </aside><!-- End Sidebar-->
             <div class="main" id="main">
-                <section class="section student">
+                <div class="pagetitle">
+                    <h1>Edit Student</h1>
                     <nav>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/student"><i class="bi bi-arrow-left"></i> Go Back</a>
-                            </li>
-
-                        </ol>
+                      <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/student">Student Management</a></li>
+                        <li class="breadcrumb-item active">Edit Student</li>
+                      </ol>
                     </nav>
+                  </div>
+                <section class="section student">
+                    
                     <div class="row">
                         <div class="card">
                             <div class="card-body">
@@ -61,19 +65,23 @@
                                                 
                                                 <form action="/student/edit" method="post" class="needs-validation"
                                                     novalidate>
-                                                    <div class="mb-2">
-                                                        <label for="student_id" class="form-label">Student
-                                                            ID</label>
-                                                        <input class="form-control " type="text"
-                                                            name="student_id" id="student_id" autofocus readonly value="<%=student_record.student_id%>"
+                                                    <div class="mb-3 row">
+                                                        <label for="student_id" class="col-sm-3 col-form-label">Student
+                                                            ID:</label>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control-plaintext fw-bold" type="text"
+                                                            name="student_id" id="student_id" readonly value="<%=student_record.student_id%>"
                                                             minlength="9" maxlength="9"></input>
-                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                      </div>
+                                               
 
                                                     <div class="mb-2">
                                                         <label for="name" class="form-label">Student
                                                             Name</label>
                                                         <input class="form-control" type="text"
-                                                            name="name" id="name" value="<%=student_record.name%>" required></input>
+                                                            name="name" id="name" value="<%=student_record.name%>" autofocus  required></input>
                                                     </div>
                                                     <div class="mb-2">
                                                         <label for="section" class="form-label">Degree</label>
@@ -106,30 +114,7 @@
                 </section>
             </div>
             <%-include ("./Include/Admin/script.ejs")%>
-                <script>
-
-                    // Example starter JavaScript for disabling form submissions if there are invalid fields
-                    (() => {
-                        'use strict'
-
-                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                        const forms_input = document.querySelectorAll('.needs-validation')
-
-                        // Loop over them and prevent submission
-                        Array.from(forms_input).forEach(form => {
-                            form.addEventListener('submit', event => {
-                                if (!form.checkValidity()) {
-                                    event.preventDefault()
-                                    event.stopPropagation()
-                                }
-
-                                form.classList.add('was-validated')
-                            }, false)
-                        })
-
-
-                    })()
-                </script>
+               
     </body>
 
     </html>

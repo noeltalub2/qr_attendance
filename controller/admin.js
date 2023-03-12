@@ -103,8 +103,23 @@ const getDashboard = async (req, res) => {
 };
 
 const getStudent = async (req, res) => {
+	res.render("student");
+};
+
+const postAllStudent = async (req, res) => {
 	const student_record = await zeroParam("SELECT * FROM student");
-	res.render("student", { student_record });
+	var resultData = [];
+
+	student_record.forEach((data) => {
+		resultData.push({
+			student_id: data.student_id,
+			name: data.name,
+			degree: data.degree,
+			year_section: data.year_section,
+		});
+	});
+
+	res.json({ data: resultData });
 };
 const getStudentEdit = async (req, res) => {
 	const student_id = req.params.student_id;
@@ -165,8 +180,26 @@ const deleteStudent = async (req, res) => {
 };
 
 const getAttendance = async (req, res) => {
-	const attendance_record = await zeroParam("SELECT * FROM attendance");
-	res.render("attendance", { attendance_record });
+	res.render("attendance");
+};
+const postAllAttendance = async (req, res) => {
+	const attendance = await zeroParam("SELECT * FROM attendance");
+	var resultData = [];
+
+	attendance.forEach((data) => {
+		resultData.push({
+			attendance_id: data.attendance_id,
+			event_code: data.event_code,
+			student_id: data.student_id,
+			time_in_am: data.time_in_am,
+			time_out_am: data.time_out_am,
+			time_in_pm: data.time_in_pm,
+			time_out_pm: data.time_out_pm,
+			log_date: data.log_date,
+		});
+	});
+
+	res.json({ data: resultData });
 };
 
 const getEvent = async (req, res) => {
@@ -356,6 +389,21 @@ const getStudentNew = async (req, res) => {
 	res.render("student_new");
 };
 
+const postStudentExist = async (req, res) => {
+	const student_id = req.body.student_id;
+	console.log(student_id)
+	const exist_student = (
+		await zeroParam(
+			`SELECT count(*) as 'count' FROM student WHERE student_id = '${student_id}'`
+		)
+	)[0].count;
+
+	if (exist_student) {
+		res.status(200).json({ status: "success" });
+	} else {
+		res.status(200).json({ status: "error" });
+	}
+};
 const postStudentUpload = async (req, res) => {
 	const { student_id, name, degree, year_section } = req.body;
 
@@ -373,7 +421,7 @@ const postStudentUpload = async (req, res) => {
 		)[0].count;
 
 		if (exist_student) {
-			req.flash("error_msg", `Student is already registered.`);
+			req.flash("error_msg", `${student_id} is already registered.`);
 			res.redirect("/student_new");
 		} else {
 			db.query("INSERT INTO student SET ?", data, (err, results) => {
@@ -436,21 +484,83 @@ const postExcelUpload = async (req, res) => {
 	}
 };
 
+const getSettings = (req, res) => {
+	res.render("settings");
+};
+
+const changePassword = async (req, res) => {
+	const { newPassword, oldPassword } = req.body;
+	try {
+		const password = (
+			await queryParam("SELECT password FROM admin WHERE username = ?", [
+				res.locals.sid,
+			])
+		)[0].password;
+
+		const match_password = await bcrypt.compare(oldPassword, password);
+
+		if (match_password) {
+			const salt = bcrypt.genSaltSync(12);
+			const hash = bcrypt.hashSync(newPassword, salt);
+
+			const update_password = await zeroParam(
+				`UPDATE admin SET password = '${hash}' WHERE username = '${res.locals.sid}'`
+			);
+			req.flash("success_msg", `Successfully changed password`);
+			res.redirect("/settings");
+		} else {
+			req.flash("error", `Invalid Password. Try Again`);
+			res.redirect("/settings");
+		}
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+const delDatabase = (req, res) => {
+	try {
+		const del_password = req.body.password;
+
+		const findUser = `SELECT * from admin WHERE username = ?`;
+		db.query(findUser, [res.locals.sid], async (err, result) => {
+			if (err) {
+				req.flash("error_msg", "Authentication failed.");
+				res.redirect("/login");
+			} else {
+				if (result.length > 0) {
+					const match_password = await bcrypt.compare(
+						del_password,
+						result[0].password
+					);
+					if (match_password) {
+						res.status(200).json({ status: "success" });
+					} else {
+						res.status(200).json({ status: "error" });
+					}
+				}
+			}
+		});
+	} catch (e) {
+		console.log(e);
+	}
+};
 const getLogout = (req, res) => {
 	res.clearCookie("token");
 	res.redirect("/login");
-}
+};
 module.exports = {
 	getLogin,
 	postLogin,
 	getDashboard,
 	getStudent,
+	postAllStudent,
 	getStudentView,
 	getStudentEdit,
 	postStudentEdit,
 	getStudentNew,
 	deleteStudent,
 	getAttendance,
+	postAllAttendance,
 	getEvent,
 	getEventNew,
 	postEventNew,
@@ -459,7 +569,10 @@ module.exports = {
 	postEventEdit,
 	deleteEvent,
 	postStudentUpload,
+	postStudentExist,
 	postExcelUpload,
-
+	getSettings,
+	changePassword,
+	delDatabase,
 	getLogout,
 };

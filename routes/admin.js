@@ -11,14 +11,16 @@ router.post("/login", forwardAuth, adminController.postLogin)
 router.get("/dashboard", requireAuth, adminController.getDashboard);
 
 router.get("/student", requireAuth, adminController.getStudent);
+router.post("/student_data", requireAuth, adminController.postAllStudent);
 router.get(
-	"/student/edit/:student_id",
+	"/student/edit/:student_id",	
 	requireAuth,
 	adminController.getStudentEdit
 );
 router.post("/student/edit", requireAuth, adminController.postStudentEdit);
 router.get("/student_new", requireAuth, adminController.getStudentNew);
 router.post("/student_new", requireAuth, adminController.postStudentUpload);
+router.post("/student_exist", requireAuth, adminController.postStudentExist);
 router.get(
 	"/student/view/:student_id",
 	requireAuth,
@@ -27,6 +29,7 @@ router.get(
 router.delete("/student/delete", requireAuth, adminController.deleteStudent);
 
 router.get("/attendance", requireAuth, adminController.getAttendance);
+router.post("/attendance_data", requireAuth, adminController.postAllAttendance);
 
 router.get("/event", requireAuth, adminController.getEvent);
 
@@ -59,7 +62,9 @@ router.get(
 	excelDownload
 );
 
-
+router.get("/settings", requireAuth, adminController.getSettings)
+router.post("/change_password", requireAuth, adminController.changePassword)
+router.post("/delete_database", requireAuth, adminController.delDatabase)
 router.get("/logout", requireAuth, adminController.getLogout)
 
 module.exports = router;

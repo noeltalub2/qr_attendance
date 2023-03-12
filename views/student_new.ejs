@@ -18,7 +18,7 @@
                     <!-- End Dashboard Nav -->
                     </li><!-- End Components Nav -->
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="/student">
+                        <a class="nav-link" href="/student">
                             <i class="bi bi-person-circle"></i>
                             <span>Student Management</span>
                         </a>
@@ -32,7 +32,7 @@
                         </a>
                     </li><!-- End Blank Page Nav -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/event">
+                        <a class="nav-link collapsed" href="/event">
 
                             <i class="bi bi-calendar-event"></i>
                             <span>Event Management</span>
@@ -42,88 +42,100 @@
 
             </aside><!-- End Sidebar-->
             <div class="main" id="main">
-                <section class="section student">
+                <div class="pagetitle">
+                    <h1>Add Student</h1>
                     <nav>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/student"><i class="bi bi-arrow-left"></i> Go Back</a>
-                            </li>
-
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/student">Student Management</a></li>
+                            <li class="breadcrumb-item active">Add Student</li>
                         </ol>
                     </nav>
-                    <div class="row">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Insert New Student</h5>
-                                <%-include ("./Include/Admin/message.ejs")%>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="input-container">
-                                                <h6>Manual Insert (Single Data)</h6>
-                                                <form action="/student_new" method="post" class="needs-validation"
-                                                    novalidate>
-                                                    <div class="mb-2">
-                                                        <label for="student_id" class="form-label">Student
-                                                            ID</label>
-                                                        <input class="form-control form-control-sm" type="text"
-                                                            name="student_id" id="student_id" autofocus
-                                                            required minlength="9" maxlength="9"></input>
-                                                    </div>
-
-                                                    <div class="mb-2">
-                                                        <label for="name" class="form-label">Student
-                                                            Name</label>
-                                                        <input class="form-control form-control-sm" type="text"
-                                                            name="name" id="name" required></input>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label for="section" class="form-label">Degree</label>
-
-                                                        <input class="form-control form-control-sm" type="text"
-                                                            name="degree" id="degree" required></input>
+                </div>
+                <section class="section student">
+                    <%-include ("./Include/Admin/message.ejs")%>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="input-container">
+                                            <h6 class="card-title">Manual Insert (Single Data)</h6>
+                                            <form action="/student_new" method="post" class="needs-validation"
+                                                id="form-single" novalidate>
+                                                <div class="mb-2">
+                                                    <label for="student_id" class="form-label">Student
+                                                        ID</label>
+                                                    <input class="form-control form-control-sm" type="text"
+                                                        name="student_id" id="student_id" autofocus required
+                                                        onkeyup="getStudent()"></input>
+                                                    <div class="invalid-feedback" id="invalid-feedback">
 
                                                     </div>
-                                                    <div class="mb-2">
-                                                        <label for="course" class="form-label">Year &
-                                                            Section</label>
-                                                        <input class="form-control form-control-sm" type="text"
-                                                            name="year_section" id=" year_section" required minlength="3" maxlength="3"></input>
-                                                    </div>
+                                                </div>
+
+
+                                                <div class="mb-2">
+                                                    <label for="name" class="form-label">Student
+                                                        Name</label>
+                                                    <input class="form-control form-control-sm" type="text" name="name"
+                                                        id="name" required></input>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="section" class="form-label">Degree</label>
+
+                                                    <input class="form-control form-control-sm" type="text"
+                                                        name="degree" id="degree" required></input>
+
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="course" class="form-label">Year &
+                                                        Section</label>
+                                                    <input class="form-control form-control-sm" type="text"
+                                                        name="year_section" id=" year_section" required minlength="3"
+                                                        maxlength="3"></input>
+                                                </div>
 
 
 
-                                                    <input class="btn btn-success btn-sm" id="register" type="submit"
-                                                        value="Register"></input>
+                                                <input class="btn btn-success btn-sm mb-2" id="register" type="submit"
+                                                    value="Register"></input>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="excel-container">
+                                            <h6 class="card-title">Upload Excel (Multiple Data)</h6>
+                                            <div class="excel-img-container text-center">
+                                                <img src="/img/excel.png" alt="" class="img-fluid mx-auto d-block">
+                                                <small class="fst-italic">Example of Excel Format</small>
+                                            </div>
+
+                                            <div class="excel-form mt-3">
+                                                <form action="/upload_excel" enctype="multipart/form-data" method="post"
+                                                    class="needs-validation-excel" novalidate>
+
+                                                    <input type="file" name="import-excel"
+                                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                                        class="form-control form-control-sm" required />
+                                                    <button type="submit"
+                                                        class="btn btn-success btn-sm mt-2">Upload</button>
 
                                                 </form>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="excel-container">
-                                                <h6>Upload Excel (Multiple Data)</h6>
-                                                <div class="excel-img-container text-center">
-                                                    <img src="/img/excel.png" alt="" class="img-fluid mx-auto d-block">
-                                                    <small class="fst-italic">Example of Excel Format</small>
-                                                </div>
 
-                                                <div class="excel-form mt-3">
-                                                    <form action="/upload_excel" enctype="multipart/form-data"
-                                                        method="post" class="needs-validation-excel" novalidate>
-
-                                                        <input type="file" name="import-excel"
-                                                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                                            class="form-control form-control-sm" required />
-                                                        <button type="submit"
-                                                            class="btn btn-success btn-sm mt-2">Upload</button>
-
-                                                    </form>
-                                                </div>
-
-                                            </div>
                                         </div>
                                     </div>
+                                </div>
+
                             </div>
+
                         </div>
-                    </div>
                 </section>
             </div>
             <%-include ("./Include/Admin/script.ejs")%>
@@ -160,6 +172,41 @@
                             }, false)
                         })
                     })()
+
+                    function getStudent() {
+                        var student_id = document.getElementById("student_id").value
+                        fetch('/student_exist', {
+                            method: "POST",
+                            body: JSON.stringify({ student_id }),
+                            headers: { "Content-Type": "application/json" },
+                        })
+                            .then((res) => res.json())
+                            .then((response) => {
+                                console.log(response)
+                                if (response.status === 'success') {
+                                    document.getElementById('form-single').addEventListener('submit', event => {
+                                        event.preventDefault()
+                                        event.stopPropagation()
+                                    }, false)
+                                    document.getElementById("invalid-feedback").style.display = 'block'
+                                    document.getElementById("invalid-feedback").innerHTML = `${student_id} is already Registered`
+                                }
+
+
+                                if (response.status === "error") {
+                                   
+                                    document.getElementById("invalid-feedback").style.display = 'none'
+                                    document.getElementById("invalid-feedback").innerHTML = ''
+                                }
+
+
+                            }
+
+
+
+                            );
+
+                    }
                 </script>
     </body>
 

@@ -42,6 +42,15 @@
 
       </aside><!-- End Sidebar-->
       <div class="main" id="main">
+        <div class="pagetitle">
+          <h1>Student Management</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Student Management</li>
+            </ol>
+          </nav>
+        </div>
         <section class="section student">
           <div class="row">
 
@@ -59,51 +68,10 @@
                         <th>Name</th>
                         <th>Degree</th>
                         <th>Year / Section</th>
-
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-
-                      <%student_record.forEach((student)=> {%>
-                        <tr>
-
-                          <th>
-                            <%=student.student_id%>
-                          </th>
-                          <td>
-                            <%=student.name%>
-                          </td>
-                          <td>
-                            <%=student.degree%>
-                          </td>
-                          <td>
-                            <%=student.year_section%>
-                          </td>
-
-                          <td>
-                            <div class="text-center">
-                              <div class="dropdown">
-                                <a class="text-secondary" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                  <i class="bi bi-three-dots-vertical"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="/student/view/<%=student.student_id%>"><i
-                                        class="bi bi-eye"></i>View</a></li>
-                                  <li><a class="dropdown-item" href="/student/edit/<%=student.student_id%>"><i
-                                        class="bi bi-pencil-square"></i>Edit</a></li>
-                                  <li><button class="dropdown-item text-danger"
-                                      onclick="confirm('<%=student.student_id%>')"><i
-                                        class="bi bi-trash"></i>Delete</i></button></li>
-                                </ul>
-                              </div>
-                            </div>
-                          </td>
-
-                        </tr>
-                        <%})%>
-
-
 
                     </tbody>
 
@@ -133,9 +101,31 @@
           }
 
 
-          $(document).ready(function () {
-            $('#studentTable').DataTable({});
+          var table = $("#studentTable").DataTable({
+
+            processing: true,
+            
+        
+
+            ajax: {
+              url: "/student_data",
+              type: "POST",
+          
+            },
+            columns: [
+              { 'data': 'student_id' },
+              { 'data': 'name' },
+              { 'data': 'degree' },
+              { 'data': 'year_section' },
+              {
+                'data': null, 'render': function (data) {
+                  return '<div class="text-center"> <div class="dropdown"> <a class="text-secondary" href="#" data-bs-toggle="dropdown" aria-expanded="false"> <i class="bi bi-three-dots-vertical"></i> </a> <ul class="dropdown-menu"> <li><a class="dropdown-item" href="/student/view/'+data.student_id+'"><i class="bi bi-eye"></i>View</a></li> <li><a class="dropdown-item" href="/student/edit/'+data.student_id+'"><i class="bi bi-pencil-square"></i>Edit</a></li> <li><button class="dropdown-item text-danger" onclick="confirm('+data.student_id+')"><i class="bi bi-trash"></i>Delete</i></button></li> </ul> </div>'
+                }
+              },
+
+            ]
           });
+
 
 
           function confirm(id) {
@@ -157,13 +147,13 @@
                   .then((res) => res.json())
                   .then((response) => {
                     if (response.status === "success") {
-                      Toast.fire({
-                        icon: 'success',
-                        title: "Successfully Deleted"
+                      Swal.fire(
+                        'Deleted!',
+                        'Student data has been deleted.',
+                        'success'
+                      ).then(function () {
+                        window.location.replace("/student")
                       })
-                      setTimeout(function () {
-                        window.location = "/student";
-                      }, 1000)
                     }
                   })
               }

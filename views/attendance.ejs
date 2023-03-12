@@ -40,12 +40,21 @@
 
       </aside><!-- End Sidebar-->
       <main class="main" id="main">
+        <div class="pagetitle">
+          <h1>Attendance Management</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Attendance Management</li>
+            </ol>
+          </nav>
+        </div>
         <section class="section student">
           <div class="row">
 
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Attendance Record</h5>
+                <h5 class="card-title">All Attendance Record</h5>
                 <div class="table-responsive-md">
                   <table id="attendanceTable" class="table" style="width: 100%;">
                     <thead>
@@ -64,35 +73,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <%attendance_record.forEach((attendance)=> {%>
-                        <tr>
-                          <th>
-                            <%=attendance.attendance_id%>
-                          </th>
-                          <td>
-                            <%=attendance.event_code%>
-                          </td>
-                          <td>
-                            <%=attendance.student_id%>
-                          </td>
-                          <td>
-                            <%=attendance.time_in_am%>
-                          </td>
-                          <td>
-                            <%=attendance.time_out_am%>
-                          </td>
-                          <td>
-                            <%=attendance.time_in_pm%>
-                          </td>
-                          <td>
-                            <%=attendance.time_out_pm%>
-                          </td>
-                          <td>
-                            <%=attendance.log_date%>
-                          </td>
 
-                        </tr>
-                        <%})%>
                     </tbody>
                   </table>
                 </div>
@@ -112,10 +93,31 @@
 
         <script>
 
-          $(document).ready(function () {
-            $('#attendanceTable').DataTable({
-            });
+          var table = $("#attendanceTable").DataTable({
+
+            processing: true,
+
+
+            ajax: {
+              url: "/attendance_data",
+              type: "POST",
+
+            },
+            columns: [
+              { 'data': 'attendance_id' },
+              { 'data': 'event_code' },
+              { 'data': 'student_id' },
+              { 'data': 'time_in_am' },
+              { 'data': 'time_out_am' },
+              { 'data': 'time_in_pm' },
+              { 'data': 'time_out_pm' },
+              { 'data': 'log_date' },
+             
+
+            ]
           });
+
+
         </script>
   </body>
 

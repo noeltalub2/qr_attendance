@@ -41,6 +41,15 @@
       </aside><!-- End Sidebar-->
 
       <main id="main" class="main">
+        <div class="pagetitle">
+          <h1>Dashboard</h1>
+          <nav>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
         <section class="section dashboard">
           <div class="row">
             <!-- Active User Card -->
@@ -135,36 +144,39 @@
                       All</a></h5>
 
                   <!-- Table with stripped rows -->
-                  <table class="table ">
-                    <thead>
-                      <tr>
-
-                        <th scope="col">Student ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Degree</th>
-                        <th scope="col">Year & Section</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <%recent_new_user.forEach((student)=> {%>
+                  <div class="table-responsive-md">
+                    <table class="table ">
+                      <thead>
                         <tr>
-                          <th scope="row">
-                            <%=student.student_id%>
-                          </th>
-                          <td>
-                            <%=student.name%>
-                          </td>
-                          <td>
-                            <%=student.degree%>
-                              </th>
-                          <td>
-                            <%=student.year_section%>
-                          </td>
-
+  
+                          <th scope="col">Student ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Degree</th>
+                          <th scope="col">Year & Section</th>
                         </tr>
-                        <%})%>
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        <%recent_new_user.forEach((student)=> {%>
+                          <tr>
+                            <th scope="row">
+                              <%=student.student_id%>
+                            </th>
+                            <td>
+                              <%=student.name%>
+                            </td>
+                            <td>
+                              <%=student.degree%>
+                                </th>
+                            <td>
+                              <%=student.year_section%>
+                            </td>
+  
+                          </tr>
+                          <%})%>
+                      </tbody>
+                    </table>
+                  </div>
+                  
 
 
                 </div>
@@ -178,46 +190,49 @@
                       All</a></h5>
 
                   <!-- Table with stripped rows -->
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Student ID</th>
-                        <th scope="col">Event Code</th>
-                        <th scope="col">Status</th>
-
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <%recent_attendance.forEach((attendance)=> {%>
+                  <div class="table-responsive-md">
+                    <table class="table">
+                      <thead>
                         <tr>
-
-                          <td>
-                            <%=attendance.log_date%>
-                          </td>
-                          <td>
-                            <%=attendance.student_id%>
-                          </td>
-                          <td>
-                            <%=attendance.event_code%>
-                          </td>
-                          <td>
-                            <%if (attendance.status==='1' ) {%>
-                              <span>TIME IN (AM)</span>
-                              <%} else if (attendance.status==='2' ) {%>
-                                <span>TIME OUT (AM)</span>
-                                <%} else if (attendance.status==='3' ) {%>
-                                  <span>TIME IN (AM)</span>
-                                  <%} else if (attendance.status==='4' ) {%>
-                                    <span>TIME OUT (PM)</span>
-                                    <%}%>
-
-                          </td>
-
+                          <th scope="col">Date</th>
+                          <th scope="col">Student ID</th>
+                          <th scope="col">Event Code</th>
+                          <th scope="col">Status</th>
+  
                         </tr>
-                        <%})%>
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        <%recent_attendance.forEach((attendance)=> {%>
+                          <tr>
+  
+                            <td>
+                              <%=attendance.log_date%>
+                            </td>
+                            <td>
+                              <%=attendance.student_id%>
+                            </td>
+                            <td>
+                              <%=attendance.event_code%>
+                            </td>
+                            <td>
+                              <%if (attendance.status==='1' ) {%>
+                                <span>TIME IN (AM)</span>
+                                <%} else if (attendance.status==='2' ) {%>
+                                  <span>TIME OUT (AM)</span>
+                                  <%} else if (attendance.status==='3' ) {%>
+                                    <span>TIME IN (AM)</span>
+                                    <%} else if (attendance.status==='4' ) {%>
+                                      <span>TIME OUT (PM)</span>
+                                      <%}%>
+  
+                            </td>
+  
+                          </tr>
+                          <%})%>
+                      </tbody>
+                    </table>
+                  </div>
+               
                   <!-- End Table with stripped rows -->
 
                 </div>
